@@ -1,5 +1,6 @@
 import os
 import discord
+from decouple import config
 
 class DiscordClient(discord.Client):
     async def on_ready(self):
@@ -13,7 +14,7 @@ class DiscordClient(discord.Client):
 
 if __name__ == "__main__":
     #Implement .env
-    _token = "ODU5MDc1Mzg0ODc2MjA0MDMy.YNnaTA.3RaNWfzY3uuJFCVML20Baucp5WM"
+    _token = config("discord_token")
     intents = discord.Intents.default()
     intents.members = True
     client = DiscordClient(intents=intents)
