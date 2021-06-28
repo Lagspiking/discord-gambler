@@ -11,6 +11,6 @@ Functions & Local Variables:
 lowercase, with words separated by underscores as necessary to improve readability
 
 ## Discord.Py
-Main:       https://discordpy.readthedocs.io/en/stable/#getting-started
-Commands:   https://discordpy.readthedocs.io/en/stable/ext/commands/index.html
-Tasks:      https://discordpy.readthedocs.io/en/stable/ext/tasks/index.html
+Main: https://discordpy.readthedocs.io/en/stable/#getting-started
+Commands: https://discordpy.readthedocs.io/en/stable/ext/commands/index.html
+Tasks: https://discordpy.readthedocs.io/en/stable/ext/tasks/index.html
