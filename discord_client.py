@@ -15,6 +15,7 @@ intents.members = True
 bot = commands.Bot(command_prefix='!', intents=intents)
 
 #register our listeners
+bot.add_cog(DiscordListeners(bot))
 bot.add_cog(MessageListeners(bot))
 bot.add_cog(MemberListeners(bot))
 bot.add_cog(VoiceListeners(bot))
