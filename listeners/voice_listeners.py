@@ -15,4 +15,4 @@ class VoiceListeners(commands.Cog):
     #This requires Intents.voice_states to be enabled.
     @commands.Cog.listener()
     async def on_voice_state_update(self, member, before, after):
-        print(f"{member} -> {before} -> {after}")
+        pass

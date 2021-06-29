@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 from decouple import config
 import typing
+import datetime
 
 class CoinflipCommand(commands.Cog):
     def __init__(self, bot):
@@ -10,8 +11,12 @@ class CoinflipCommand(commands.Cog):
     @commands.command(name = "create", aliases=["c"])
     async def on_create_coinflip_command(self, ctx, coins: int):
         if ctx.channel.name == config('channel_name'):
+            await ctx.message.delete()
             economy_cog = self.bot.get_cog("Economy")
             coinflip_cog = self.bot.get_cog("Coinflip")
+            
+            embed = discord.Embed(title=f"Coinflip", timestamp=datetime.datetime.utcnow(), color=discord.Color.blue())
+            embed.add_field(name="User:", value=f"{ctx.author}")
             
             #Get the users wallet/coins
             wallet = economy_cog.get_wallet(ctx.author)
@@ -19,15 +24,17 @@ class CoinflipCommand(commands.Cog):
             if coins <= 0:
                 await ctx.send(f"You cannot create a zero/negative value coinflip.")
             elif wallet < coins:
-                await ctx.send(f"You do not have enough coins to create this coinflip.")
+                await ctx.send(f"You do not have enough coins for this coinflip.")
             elif wallet >= coins:
                 economy_cog.withdraw(ctx.author, coins)
                 coinflip_cog.create_coinflip(ctx.author, coins)
-                await ctx.send(f"{ctx.author} has created a coinflip for {coins} coins!")
+                embed.add_field(name="Coins:", value=f"{coins}")
+                await ctx.send(embed=embed)
 
     @commands.command(name = "join", aliases=["j"])
     async def on_join_coinflip_command(self, ctx, member: discord.Member):
         if ctx.channel.name == config('channel_name'):
+            await ctx.message.delete()
             economy_cog = self.bot.get_cog("Economy")
             coinflip_cog = self.bot.get_cog("Coinflip")
 
@@ -54,10 +61,11 @@ class CoinflipCommand(commands.Cog):
     @commands.command(name = "remove", aliases=["r"])
     async def on_remove_coinflip_command(self, ctx):
         if ctx.channel.name == config('channel_name'):
+            await ctx.message.delete()
             economy_cog = self.bot.get_cog("Economy")
             coinflip_cog = self.bot.get_cog("Coinflip")
 
-            coinflip_match = await coinflip_cog.get_coinflip_game(ctx.author)
+            coinflip_match = coinflip_cog.get_coinflip_game(ctx.author)
 
             if coinflip_match is None:
                 await ctx.send(f"You do not have a coinflip in progress.")
