@@ -18,20 +18,20 @@ class CoinflipGame():
             self.__winner = self.__joiner
             self.__loser = self.__creator
 
-    async def join(self, member):
+    def join(self, member):
         self.__joiner = member
 
-    async def is_joinable(self):
+    def is_joinable(self):
         return self.__joiner is None
 
-    async def get_creator(self):
+    def get_creator(self):
         return self.__creator
 
-    async def get_winner(self):
+    def get_winner(self):
         return self.__winner
     
-    async def get_loser(self):
+    def get_loser(self):
         return self.__loser
 
-    async def get_coins(self):
+    def get_coins(self):
         return self.__coins
