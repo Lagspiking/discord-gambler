@@ -1,6 +1,7 @@
 from listeners import *
 from cogs import *
 from commands import *
+from tasks import *
 import discord
 import logging
 from discord.ext import commands
@@ -31,5 +32,8 @@ bot.add_cog(CoinsCommand(bot))
 bot.add_cog(CleanseCommand(bot))
 bot.add_cog(LeaderboardCommand(bot))
 bot.add_cog(CoinflipCommand(bot))
+
+#register our background tasks
+bot.add_cog(CoinsTasks(bot))
 
 bot.run(_token)
