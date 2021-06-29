@@ -18,6 +18,10 @@ class EconomyCog(commands.Cog, name = "Economy"):
         if not self.wallet_exists(member):
             self.create_wallet(member)
         return self._wallets.get(str(member.id))
+    
+    #Get all wallets
+    def get_all_wallets(self):
+        return self._wallets
 
     #Check if a members wallet exists, if not, create one.
     def wallet_exists(self, member):

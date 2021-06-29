@@ -1,4 +1,6 @@
+import discord
 from discord.ext import commands
+from decouple import config
 
 #https://discordpy.readthedocs.io/en/stable/api.html#event-reference
 class DiscordListeners(commands.Cog):
@@ -8,4 +10,4 @@ class DiscordListeners(commands.Cog):
         
     @commands.Cog.listener()
     async def on_ready(self):
-        print("discord is ready")
+        pass
