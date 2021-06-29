@@ -3,3 +3,4 @@ from .economy import *
 from .currency import *
 from .leaderboard import *
 from .test import *
+from .coinflip import *

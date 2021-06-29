@@ -14,6 +14,7 @@ bot = commands.Bot(command_prefix='!', intents=intents)
 
 #register our models
 bot.add_cog(Economy(bot))
+bot.add_cog(Coinflip(bot))
 
 #register our commands/cogs
 bot.add_cog(CurrencyCommand(bot))
