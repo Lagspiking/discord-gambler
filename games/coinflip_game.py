@@ -8,7 +8,7 @@ class CoinflipGame():
         self._winner = None
         self._loser = None
 
-    async def flip(self):
+    def flip(self):
         coinflip = random.randint(0, 1)
 
         if coinflip == 0:
