@@ -19,6 +19,7 @@ bot.add_cog(CoinflipCog(bot))
 
 #register our commands/cogs
 bot.add_cog(CoinsCommand(bot))
+bot.add_cog(CleanseCommand(bot))
 bot.add_cog(CoinflipCommand(bot))
 
 bot.run(_token)
