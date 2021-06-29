@@ -3,8 +3,10 @@ from discord.ext import commands
 #https://discordpy.readthedocs.io/en/stable/api.html#event-reference
 class VoiceListeners(commands.Cog):
     
-    #Called when a Member changes their VoiceState.
+    def __init__(self, bot):
+        self._bot = bot
 
+    #Called when a Member changes their VoiceState.
     #The following, but not limited to, examples illustrate when this event is called:
     #A member joins a voice channel.
     #A member leaves a voice channel.
