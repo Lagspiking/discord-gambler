@@ -7,7 +7,8 @@ class CurrencyCommand(commands.Cog):
     
     @commands.command(name="coins")
     async def on_coins_command(self, ctx):
-        print("coins")
+        economy = self.bot.get_cog("Economy")
+        await ctx.send(f"You have {await economy.get_wallet(ctx.author)} coins!")
 
     @commands.command(name="give")
     async def on_give_coins_command(self, ctx, coins: int, member: discord.Member):

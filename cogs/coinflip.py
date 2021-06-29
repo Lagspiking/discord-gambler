@@ -8,11 +8,11 @@ class Coinflip(commands.Cog):
         self.__bot = bot
         self.__coinflips = []
 
-    async def create_coinflip(self, member, coins):
+    async def create_coinflip(self, ctx, member, coins):
         self.__coinflips.append(CoinflipGame(member, coins))
-        print(f"{member.id} has created a coinflip with value of {coins}")
+        await ctx.send(f"{member.id} has created a coinflip with value of {coins}")
 
-    async def join_coinflip(self, creator, joiner):
+    async def join_coinflip(self, ctx, creator, joiner):
         game = None
         for g in self.__coinflips:
             if await g.get_creator() == creator and await g.is_joinable():
@@ -20,8 +20,14 @@ class Coinflip(commands.Cog):
 
         await game.join(joiner)
         await game.flip()
-        print(f"{await game.get_winner()} has won!")
+        await ctx.send(f"{await game.get_winner()} has won {await game.get_coins() * 2} against {await game.get_loser()}!")
         
+    async def get_coinflip_game(self, creator):
+        game = None
+        for g in self.__coinflips:
+            if await g.get_creator() == creator and await g.is_joinable():
+                game = g
+        return game
 
     async def remove_coinfip(self, member):
         #remove a coinflip
@@ -62,3 +68,6 @@ class CoinflipGame():
     
     async def get_loser(self):
         return self.__loser
+
+    async def get_coins(self):
+        return self.__coins
