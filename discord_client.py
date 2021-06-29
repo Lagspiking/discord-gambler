@@ -1,4 +1,5 @@
 from cogs import *
+from commands import *
 import discord
 import logging
 from discord.ext import commands
@@ -13,13 +14,11 @@ intents.members = True
 bot = commands.Bot(command_prefix='!', intents=intents)
 
 #register our models
-bot.add_cog(Economy(bot))
-bot.add_cog(Coinflip(bot))
+bot.add_cog(EconomyCog(bot))
+bot.add_cog(CoinflipCog(bot))
 
 #register our commands/cogs
-bot.add_cog(GameCommand(bot))
-bot.add_cog(CurrencyCommand(bot))
-bot.add_cog(LeaderboardsCommand(bot))
-bot.add_cog(TestCommand(bot))
+bot.add_cog(CoinsCommand(bot))
+bot.add_cog(CoinflipCommand(bot))
 
 bot.run(_token)
