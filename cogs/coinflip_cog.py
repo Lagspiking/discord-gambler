@@ -25,9 +25,9 @@ class CoinflipCog(commands.Cog, name = "Coinflip"):
                 game = g
         return game
 
-    async def remove_coinfip(self, member):
-        #remove a coinflip
-        ...
+    async def remove_coinflip(self, member):
+        game = await self.get_coinflip_game(member)
+        self.__coinflips.remove(game)
 
     async def get_coinflips(self):
         return self.__coinflips

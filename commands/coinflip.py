@@ -47,3 +47,18 @@ class CoinflipCommand(commands.Cog):
         await coinflip.run_coinflip(await game.get_creator())
         await economy.deposit_coins(await game.get_winner(), await game.get_coins() * 2)
         await ctx.send(f"{await game.get_winner()} has won {await game.get_coins()} coins from {await game.get_loser()}")
+
+    @commands.command(name = "remove")
+    async def on_remove_coinflip_command(self, ctx):
+        economy = self.bot.get_cog("Economy")
+        coinflip = self.bot.get_cog("Coinflip")
+
+        game = await coinflip.get_coinflip_game(ctx.author)
+
+        if game is None:
+            await ctx.send(f"You do not have a coinflip in progress.")
+            return
+
+        await coinflip.remove_coinflip(ctx.author)
+        await economy.deposit_coins(ctx.author, await game.get_coins())
+        await ctx.send(f"Your coinflip has been removed.")
