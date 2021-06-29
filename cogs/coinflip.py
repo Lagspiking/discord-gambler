@@ -33,17 +33,20 @@ class Coinflip(commands.Cog):
 class CoinflipGame():
     def __init__(self, creator, coins):
         self.__creator = creator
-        self.__coins = coins
         self.__joiner = None
+        self.__coins = coins
         self.__winner = None
+        self.__loser = None
 
     async def flip(self):
         coinflip = random.randint(0, 1)
 
         if coinflip == 0:
             self.__winner = self.__creator
+            self.__loser = self.__joiner
         else:
             self.__winner = self.__joiner
+            self.__loser = self.__creator
 
     async def join(self, member):
         self.__joiner = member
@@ -56,3 +59,6 @@ class CoinflipGame():
 
     async def get_winner(self):
         return self.__winner
+    
+    async def get_loser(self):
+        return self.__loser
