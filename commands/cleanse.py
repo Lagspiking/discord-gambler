@@ -1,4 +1,5 @@
 from discord.ext import commands
+from decouple import config
 
 class CleanseCommand(commands.Cog):
     def __init__(self, bot):
@@ -6,5 +7,6 @@ class CleanseCommand(commands.Cog):
     
     @commands.command(name="cleanse")
     async def on_cleanse_command(self, ctx):
-        for message in await ctx.channel.history(limit=100).flatten():
-            await message.delete()
+        if ctx.channel.name == config('channel_name'):
+            for message in await ctx.channel.history(limit=100).flatten():
+                await message.delete()

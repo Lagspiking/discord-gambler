@@ -5,12 +5,7 @@ class MessageListeners(commands.Cog):
     
     @commands.Cog.listener()
     async def on_message(self, message):
-        if message.content.startswith('!deleteme'):
-            msg = await message.channel.send('I will delete myself now...')
-            await msg.delete()
-
-            # this also works
-            await message.channel.send('Goodbye in 3 seconds...', delete_after=3.0)
+        pass
 
     #An event that is called when a command is found and is about to be invoked.
     #This event is called regardless of whether the command itself succeeds via error or completes.
