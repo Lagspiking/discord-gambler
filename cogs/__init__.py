@@ -4,3 +4,4 @@ from .currency import *
 from .leaderboard import *
 from .test import *
 from .coinflip import *
+from .game import *

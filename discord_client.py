@@ -17,6 +17,7 @@ bot.add_cog(Economy(bot))
 bot.add_cog(Coinflip(bot))
 
 #register our commands/cogs
+bot.add_cog(GameCommand(bot))
 bot.add_cog(CurrencyCommand(bot))
 bot.add_cog(LeaderboardsCommand(bot))
 bot.add_cog(TestCommand(bot))
