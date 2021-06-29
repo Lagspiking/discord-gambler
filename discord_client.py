@@ -21,6 +21,7 @@ bot.add_cog(VoiceListeners(bot))
 bot.add_cog(GuildListeners(bot))
 
 #register our logic cogs
+bot.add_cog(DatabaseCog(bot))
 bot.add_cog(EconomyCog(bot))
 bot.add_cog(CoinflipCog(bot))
 

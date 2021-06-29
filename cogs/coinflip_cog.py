@@ -4,30 +4,30 @@ from games.coinflip_game import CoinflipGame
 class CoinflipCog(commands.Cog, name = "Coinflip"):
 
     def __init__(self, bot):
-        self.__bot = bot
-        self.__coinflips = []
+        self._bot = bot
+        self._coinflips = []
 
-    async def create_coinflip(self, member, coins):
-        self.__coinflips.append(CoinflipGame(member, coins))
+    def create_coinflip(self, member, coins):
+        self._coinflips.append(CoinflipGame(member, coins))
 
-    async def join_coinflip(self, creator, joiner):
-        game = await self.get_coinflip_game(creator)
-        await game.join(joiner)
+    def join_coinflip(self, creator, joiner):
+        game = self.get_coinflip_game(creator)
+        game.join(joiner)
 
-    async def run_coinflip(self, creator):
-        game = await self.get_coinflip_game(creator)
-        await game.flip()
+    def run_coinflip(self, creator):
+        game = self.get_coinflip_game(creator)
+        game.flip()
 
-    async def get_coinflip_game(self, creator):
+    def get_coinflip_game(self, creator):
         game = None
-        for g in self.__coinflips:
-            if await g.get_creator() == creator:
+        for g in self._coinflips:
+            if g.get_creator() == creator:
                 game = g
         return game
 
-    async def remove_coinflip(self, member):
-        game = await self.get_coinflip_game(member)
-        self.__coinflips.remove(game)
+    def remove_coinflip(self, member):
+        game = self.get_coinflip_game(member)
+        self._coinflips.remove(game)
 
-    async def get_coinflips(self):
-        return self.__coinflips
+    def get_coinflips(self):
+        return self._coinflips
