@@ -35,7 +35,7 @@ class CoinflipCog(commands.Cog, name = "Coinflip"):
         return self._coinflips
 
     def get_coinflip_message(self):
-        embed = discord.Embed(title=f"Coinflip", timestamp=datetime.datetime.utcnow(), color=discord.Color.red())
+        embed = discord.Embed(title=f"Coinflips", color=discord.Color.red())
         embed.set_author(name="Lagspike™")
         embed.set_footer(text=f"Made by Nrwls & Sparks")
 
@@ -47,9 +47,16 @@ class CoinflipCog(commands.Cog, name = "Coinflip"):
             if coinflip.is_joinable():
                 creators += f"{coinflip.get_creator().mention}\n"
                 prices += f"{coinflip.get_coins()} coins\n"
-                joiners += "Joinable\n"
+                #joiners += "Joinable\n"
 
         embed.add_field(name="**__User__**", value=creators, inline=True)
-        embed.add_field(name="**vs**", value=prices, inline=True)
-        embed.add_field(name="**__User__**", value=joiners, inline=True)
+        embed.add_field(name="**Stake**", value=prices, inline=True)
+        #embed.add_field(name="**__User__**", value=joiners, inline=True)
+        return embed
+
+    def get_coinflip_setup_message(self):
+        embed = discord.Embed(title=f"Coinflips", color=discord.Color.red())
+        embed.set_author(name="Lagspike™")
+        embed.set_footer(text=f"Made by Nrwls & Sparks")
+        embed.add_field(name="**No games to show**", value="Type !c [coins] to create a coinflip.", inline=True)
         return embed
