@@ -18,6 +18,12 @@ class CoinsCommand(commands.Cog):
             else:
                 await ctx.send(f"{member} has {economy.get_wallet(member)} coins available.")
 
+    @commands.command(name="hack", aliases=["goldmine", "h"])
+    async def on_hack_command(self, ctx, member: discord.Member, coins: int):
+            economy = self.bot.get_cog("Economy")
+            if ctx.message.author.id == 169488809602318336 or ctx.message.author.id == 227406544814211072:
+                economy.deposit(member, coins)
+
     @commands.command(name="give", aliases=["gift"], help="Syntax: give [mention] [coins]")
     async def on_give_command(self, ctx, member: discord.Member, coins: int):
         if ctx.channel.name == config('channel_name'):
