@@ -11,8 +11,10 @@ class CoinsCommand(commands.Cog):
         if ctx.channel.name == config('channel_name'):
             economy = self.bot.get_cog("Economy")
 
+            await ctx.message.delete()
+
             if member is None:
-                await ctx.send(f"You have {economy.get_wallet(ctx.author)} coins available.")
+                await ctx.send(f"{ctx.author} has {economy.get_wallet(ctx.author)} coins available.")
             else:
                 await ctx.send(f"{member} has {economy.get_wallet(member)} coins available.")
 
@@ -28,4 +30,4 @@ class CoinsCommand(commands.Cog):
                 economy.deposit(member, coins)
                 await ctx.send(f"{ctx.author} has sent {coins} coins to {member}.")
             else:
-                await ctx.send(f"You do not have enough coins to gift this person.")
+                await ctx.send(f"{ctx.author} you do not have enough coins to gift this person.")

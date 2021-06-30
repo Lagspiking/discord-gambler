@@ -1,22 +1,35 @@
 import discord
 from discord.ext import commands
 from decouple import config
+import datetime
 
 class LeaderboardCommand(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
     
     @commands.command(name="leader")
-    async def on_cleanse_command(self, ctx):
+    async def on_leader_command(self, ctx):
         guild = discord.utils.get(self.bot.guilds, name="$ui$lide")
         bot_channel = discord.utils.get(guild.text_channels, name="gamble-bot")
         economy = self.bot.get_cog("Economy")
         all_wallets = economy.get_all_wallets()
         sorted_wallets = sorted(all_wallets.items(), key=lambda x: x[1], reverse=True)
         
-        Results = "Leaderboard:\n"
+        embed = discord.Embed(title=f"Leaderboard", timestamp=datetime.datetime.utcnow(), color=discord.Color.red())
+        embed.set_author(name="Lagspike™")
+        embed.set_footer(text=f"Made by Nrwls & Sparks")
 
-        for x in sorted_wallets:
-            Results += f"{guild.get_member(int(x[0])).name}: {x[1]}\n"
-        await bot_channel.send(Results)
-            
+        creators = ""
+        coins = ""
+        count = 1
+
+        while count <= len(sorted_wallets) and count < 6:
+            for x in sorted_wallets:
+                creators += f"{count}.{guild.get_member(int(x[0])).name}\n"
+                coins += f"{x[1]}\n"
+                count += 1
+        
+        embed.add_field(name="**__User__**", value=creators, inline=True)
+        embed.add_field(name="**__Coins__**", value=coins, inline=True)
+        await ctx.message.delete()
+        await bot_channel.send(embed=embed)
