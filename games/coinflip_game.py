@@ -1,7 +1,8 @@
 import random
+import discord
 
 class CoinflipGame():
-    def __init__(self, creator, coins):
+    def __init__(self, creator: discord.Member, coins: int):
         self._creator = creator
         self._joiner = None
         self._coins = coins

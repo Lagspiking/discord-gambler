@@ -14,13 +14,6 @@ class CoinflipCommand(commands.Cog):
             await ctx.message.delete()
             economy_cog = self.bot.get_cog("Economy")
             coinflip_cog = self.bot.get_cog("Coinflip")
-            
-            embed = discord.Embed(title=f"Coinflip", timestamp=datetime.datetime.utcnow(), color=discord.Color.red())
-            embed.set_author(name="Lagspike™")
-            embed.add_field(name="**__User__**", value=f"{ctx.author.mention}", inline=True)
-            embed.add_field(name="**vs**", value=f"1000 coins", inline=True)
-            embed.add_field(name="**__User__**", value=f"Joinable", inline=True)
-            embed.set_footer(text=f"Made by Nrwls & Sparks")
             #Get the users wallet/coins
             wallet = economy_cog.get_wallet(ctx.author)
             
@@ -31,7 +24,7 @@ class CoinflipCommand(commands.Cog):
             elif wallet >= coins:
                 economy_cog.withdraw(ctx.author, coins)
                 coinflip_cog.create_coinflip(ctx.author, coins)
-                await ctx.send(embed=embed)
+                await ctx.send(embed=coinflip_cog.get_coinflip_message())
 
     @commands.command(name = "join", aliases=["j"])
     async def on_join_coinflip_command(self, ctx, member: discord.Member):
