@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 from decouple import config
 import datetime
+import asyncio
 
 class LeaderboardCommand(commands.Cog):
     def __init__(self, bot):
@@ -23,9 +24,9 @@ class LeaderboardCommand(commands.Cog):
         coins = ""
         count = 1
 
-        while count <= len(sorted_wallets) and count < 6:
-            for x in sorted_wallets:
-                creators += f"{count}.{guild.get_member(int(x[0])).name}\n"
+        for x in sorted_wallets:
+            if count < 6:
+                creators += f"{count}. {guild.get_member(int(x[0])).name}\n"
                 coins += f"{x[1]}\n"
                 count += 1
         
