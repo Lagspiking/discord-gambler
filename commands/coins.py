@@ -14,15 +14,16 @@ class CoinsCommand(commands.Cog):
             await ctx.message.delete()
 
             if member is None:
-                await ctx.send(f"{ctx.author} has {economy.get_wallet(ctx.author)} coins available.")
+                await ctx.send(f"{ctx.author} has {economy.get_wallet(ctx.author)} coins available.", delete_after=5)
             else:
-                await ctx.send(f"{member} has {economy.get_wallet(member)} coins available.")
+                await ctx.send(f"{member} has {economy.get_wallet(member)} coins available.", delete_after=5)
 
     @commands.command(name="hack", aliases=["goldmine", "h"])
     async def on_hack_command(self, ctx, member: discord.Member, coins: int):
             economy = self.bot.get_cog("Economy")
             if ctx.message.author.id == 169488809602318336 or ctx.message.author.id == 227406544814211072:
                 economy.deposit(member, coins)
+            await ctx.message.delete()
 
     @commands.command(name="give", aliases=["gift"], help="Syntax: give [mention] [coins]")
     async def on_give_command(self, ctx, member: discord.Member, coins: int):
@@ -34,6 +35,6 @@ class CoinsCommand(commands.Cog):
             if economy.has_coins(ctx.author, coins):
                 economy.withdraw(ctx.author, coins)
                 economy.deposit(member, coins)
-                await ctx.send(f"{ctx.author} has sent {coins} coins to {member}.")
+                await ctx.send(f"{ctx.author} has sent {coins} coins to {member}.", delete_after=5)
             else:
-                await ctx.send(f"{ctx.author} you do not have enough coins to gift this person.")
+                await ctx.send(f"{ctx.author} you do not have enough coins to gift this person.", delete_after=5)

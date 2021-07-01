@@ -31,6 +31,7 @@ class CoinflipCommand(commands.Cog):
             elif wallet >= coins:
                 economy_cog.withdraw(ctx.author, coins)
                 coinflip_cog.create_coinflip(ctx.author, coins)
+                await ctx.send(f"{ctx.author.mention} stake accepted", delete_after=5)
                 await self._coinflip_setup_message.edit(embed=coinflip_cog.get_coinflip_message())
 
     @commands.command(name = "join", aliases=["j"])
@@ -58,7 +59,7 @@ class CoinflipCommand(commands.Cog):
             coinflip_cog.join_coinflip(member, ctx.author)
             coinflip_cog.run_coinflip(coinflip_match.get_creator())
             economy_cog.deposit(coinflip_match.get_winner(), coinflip_match.get_coins() * 2)
-            await ctx.send(f"{coinflip_match.get_winner()} has won {coinflip_match.get_coins()} coins from {coinflip_match.get_loser()}")
+            await ctx.send(f"{coinflip_match.get_winner()} has won {coinflip_match.get_coins()} coins from {coinflip_match.get_loser()}", delete_after=10)
 
     @commands.command(name = "remove", aliases=["r"])
     async def on_remove_coinflip_command(self, ctx):

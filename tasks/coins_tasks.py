@@ -20,7 +20,7 @@ class CoinsTasks(commands.Cog):
 
         for memberid in self._voice:
             member = await self._bot.get_guild(417762950200295444).fetch_member(memberid)
-            self._economy.deposit(member, 1000)
+            self._economy.deposit(member, 50)
 
     @coins_reward_task.before_loop
     async def before_coins_reward_task(self):
@@ -31,4 +31,3 @@ class CoinsTasks(commands.Cog):
             if channel.type == discord.ChannelType.voice and len(channel.members) > 0:
                 for member in channel.members:
                     self._voice[str(member.id)] = datetime.now()
-
