@@ -15,8 +15,8 @@ class CoinflipCommand(commands.Cog):
     async def on_setup_coinflip_command(self, ctx):
         await ctx.message.delete()
         coinflip_cog = self.bot.get_cog("Coinflip")
-        self._coinflip_open_message = await ctx.send(embed=coinflip_cog.get_open_coinflips_message())
-        self._coinflip_results_message = await ctx.send(embed=coinflip_cog.get_coinflip_results_message())
+        self._coinflip_open_message = (await ctx.send(embed=coinflip_cog.get_open_coinflips_message())).id
+        self._coinflip_results_message = (await ctx.send(embed=coinflip_cog.get_coinflip_results_message())).id
 
     @commands.command(name = "create", aliases=["c"])
     async def on_create_coinflip_command(self, ctx, coins: int):
@@ -34,6 +34,8 @@ class CoinflipCommand(commands.Cog):
             elif wallet >= coins:
                 economy_cog.withdraw(ctx.author, coins)
                 coinflip_cog.create_coinflip(ctx.author, coins)
+                print(self._coinflip_open_message)
+                print(self._coinflip_results_message)
                 await self.reset_messages(ctx)
 
     @commands.command(name = "join", aliases=["j"])
@@ -61,6 +63,8 @@ class CoinflipCommand(commands.Cog):
             coinflip_cog.join_coinflip(member, ctx.author)
             coinflip_cog.run_coinflip(coinflip_match.get_creator())
             economy_cog.deposit(coinflip_match.get_winner(), coinflip_match.get_coins() * 2)
+            print(self._coinflip_open_message)
+            print(self._coinflip_results_message)
             await self.reset_messages(ctx)
 
     @commands.command(name = "remove", aliases=["r"])
@@ -84,7 +88,7 @@ class CoinflipCommand(commands.Cog):
     async def reset_messages(self, ctx):
         coinflip_cog = self.bot.get_cog("Coinflip")
 
-        await self._coinflip_open_message.delete()
-        await self._coinflip_results_message.delete()
-        self._coinflip_open_message = await ctx.send(embed=coinflip_cog.get_open_coinflips_message())
-        self._coinflip_results_message = await ctx.send(embed=coinflip_cog.get_coinflip_results_message())
+        await (await ctx.fetch_message(self._coinflip_open_message)).delete()
+        await (await ctx.fetch_message(self._coinflip_results_message)).delete()
+        self._coinflip_open_message = (await ctx.send(embed=coinflip_cog.get_open_coinflips_message())).id
+        self._coinflip_results_message = (await ctx.send(embed=coinflip_cog.get_coinflip_results_message())).id
