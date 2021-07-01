@@ -35,6 +35,7 @@ class CoinflipCog(commands.Cog, name = "Coinflip"):
         return self._coinflips
 
     def get_open_coinflips_message(self):
+        print("get_open_coinflips")
         embed = discord.Embed(title=f"Coinflips", color=discord.Color.red())
         embed.set_author(name="Lagspike™")
         embed.set_footer(text=f"Made by Nrwls & Sparks")
@@ -48,14 +49,20 @@ class CoinflipCog(commands.Cog, name = "Coinflip"):
 
         for coinflip in self.get_coinflips():
             if coinflip.is_joinable():
-                creators += f"{coinflip.get_creator().mention}\n"
-                prices += f"{coinflip.get_coins()} coins\n"
+                print("iterated open")
+                if coinflip.get_creator() is not None and coinflip.get_coins() is not None:
+                    creators += f"{coinflip.get_creator().mention}\n"
+                    prices += f"{coinflip.get_coins()} coins\n"
+
+        print(creators)
+        print(prices)
 
         embed.add_field(name="**__User__**", value=creators, inline=True)
-        embed.add_field(name="**Stake**", value=prices, inline=True)
+        embed.add_field(name="**__Stake__**", value=prices, inline=True)
         return embed
 
     def get_coinflip_results_message(self):
+        print("get_coinflips_results")
         embed = discord.Embed(title=f"Coinflip Results", color=discord.Color.red())
         embed.set_author(name="Lagspike™")
         embed.set_footer(text=f"Made by Nrwls & Sparks")
@@ -73,6 +80,7 @@ class CoinflipCog(commands.Cog, name = "Coinflip"):
 
         for coinflip in self.get_coinflips():
             if not coinflip.is_joinable():
+                print("iterated results")
                 winners += f"{coinflip.get_winner().mention}\n"
                 prices += f"{coinflip.get_coins()} coins\n"
                 losers += f"{coinflip.get_loser().mention}\n"
