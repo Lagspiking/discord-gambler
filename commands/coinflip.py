@@ -39,30 +39,34 @@ class CoinflipCommand(commands.Cog):
     @commands.command(name = "join", aliases=["j"])
     async def on_join_coinflip_command(self, ctx, member: discord.Member):
         if ctx.channel.name == config('channel_name'):
-            await ctx.message.delete()
-            economy_cog = self.bot.get_cog("Economy")
-            coinflip_cog = self.bot.get_cog("Coinflip")
+            if member.name != ctx.author.name:
+                await ctx.message.delete()
+                economy_cog = self.bot.get_cog("Economy")
+                coinflip_cog = self.bot.get_cog("Coinflip")
 
-            coinflip_match = coinflip_cog.get_coinflip_game(member)
-            if coinflip_match is None:
-                await ctx.send(f"{ctx.author.mention}, a game by that user does not exist.", delete_after=5)
-                return
+                coinflip_match = coinflip_cog.get_coinflip_game(member)
+                if coinflip_match is None:
+                    await ctx.send(f"{ctx.author.mention}, a game by that user does not exist.", delete_after=5)
+                    return
 
-            if not coinflip_match.is_joinable():
-                await ctx.send(f"{ctx.author.mention}, you cannot join that game.", delete_after=5)
-                return
+                if not coinflip_match.is_joinable():
+                    await ctx.send(f"{ctx.author.mention}, you cannot join that game.", delete_after=5)
+                    return
 
-            wallet = economy_cog.get_wallet(ctx.author)
-            if wallet < coinflip_match.get_coins():
-                await ctx.send(f"{ctx.author.mention}, you do not have enough coins to join this coinflip.", delete_after=5)
-                return
+                wallet = economy_cog.get_wallet(ctx.author)
+                if wallet < coinflip_match.get_coins():
+                    await ctx.send(f"{ctx.author.mention}, you do not have enough coins to join this coinflip.", delete_after=5)
+                    return
 
-            economy_cog.withdraw(ctx.author, coinflip_match.get_coins())
-            coinflip_cog.join_coinflip(member, ctx.author)
-            coinflip_cog.run_coinflip(coinflip_match.get_creator())
-            economy_cog.deposit(coinflip_match.get_winner(), coinflip_match.get_coins() * 2)
-            await self.reset_messages()
-
+                economy_cog.withdraw(ctx.author, coinflip_match.get_coins())
+                coinflip_cog.join_coinflip(member, ctx.author)
+                coinflip_cog.run_coinflip(coinflip_match.get_creator())
+                economy_cog.deposit(coinflip_match.get_winner(), coinflip_match.get_coins() * 2)
+                await self.reset_messages()
+            else:
+                await ctx.message.delete()
+                await ctx.send(f"{ctx.author.mention}, you cannot stake yourself.", delete_after=5)
+                
     @commands.command(name = "remove", aliases=["r"])
     async def on_remove_coinflip_command(self, ctx):
         if ctx.channel.name == config('channel_name'):
