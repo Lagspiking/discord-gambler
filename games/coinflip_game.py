@@ -25,6 +25,9 @@ class CoinflipGame():
     def is_joinable(self):
         return self._joiner is None
 
+    def is_finished(self):
+        return self._winner is not None and self._loser is not None
+
     def get_creator(self):
         return self._creator
 

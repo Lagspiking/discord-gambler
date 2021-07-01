@@ -3,17 +3,20 @@ from discord.ext import commands
 from decouple import config
 import typing
 import datetime
+import asyncio
 
 class CoinflipCommand(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self._coinflip_setup_message = None
+        self._coinflip_open_message = None
+        self._coinflip_results_message = None
 
     @commands.command(name = "setup")
     async def on_setup_coinflip_command(self, ctx):
         await ctx.message.delete()
         coinflip_cog = self.bot.get_cog("Coinflip")
-        self._coinflip_setup_message = await ctx.send(embed=coinflip_cog.get_coinflip_setup_message())
+        self._coinflip_open_message = await ctx.send(embed=coinflip_cog.get_open_coinflips_message())
+        self._coinflip_results_message = await ctx.send(embed=coinflip_cog.get_coinflip_results_message())
 
     @commands.command(name = "create", aliases=["c"])
     async def on_create_coinflip_command(self, ctx, coins: int):
@@ -31,7 +34,7 @@ class CoinflipCommand(commands.Cog):
             elif wallet >= coins:
                 economy_cog.withdraw(ctx.author, coins)
                 coinflip_cog.create_coinflip(ctx.author, coins)
-                await self._coinflip_setup_message.edit(embed=coinflip_cog.get_coinflip_message())
+                await self.reset_messages(ctx)
 
     @commands.command(name = "join", aliases=["j"])
     async def on_join_coinflip_command(self, ctx, member: discord.Member):
@@ -58,7 +61,7 @@ class CoinflipCommand(commands.Cog):
             coinflip_cog.join_coinflip(member, ctx.author)
             coinflip_cog.run_coinflip(coinflip_match.get_creator())
             economy_cog.deposit(coinflip_match.get_winner(), coinflip_match.get_coins() * 2)
-            await ctx.send(f"{coinflip_match.get_winner()} has won {coinflip_match.get_coins()} coins from {coinflip_match.get_loser()}")
+            await self.reset_messages(ctx)
 
     @commands.command(name = "remove", aliases=["r"])
     async def on_remove_coinflip_command(self, ctx):
@@ -75,4 +78,13 @@ class CoinflipCommand(commands.Cog):
 
             coinflip_cog.remove_coinflip(ctx.author)
             economy_cog.deposit(ctx.author, coinflip_match.get_coins())
-            await ctx.send(f"{ctx.author.id} has removed their coinflip.", delete_after=5)
+            await self.reset_messages(ctx)
+
+
+    async def reset_messages(self, ctx):
+        coinflip_cog = self.bot.get_cog("Coinflip")
+
+        await self._coinflip_open_message.delete()
+        await self._coinflip_results_message.delete()
+        self._coinflip_open_message = await ctx.send(embed=coinflip_cog.get_open_coinflips_message())
+        self._coinflip_results_message = await ctx.send(embed=coinflip_cog.get_coinflip_results_message())

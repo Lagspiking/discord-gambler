@@ -34,29 +34,50 @@ class CoinflipCog(commands.Cog, name = "Coinflip"):
     def get_coinflips(self):
         return self._coinflips
 
-    def get_coinflip_message(self):
+    def get_open_coinflips_message(self):
         embed = discord.Embed(title=f"Coinflips", color=discord.Color.red())
         embed.set_author(name="Lagspike™")
         embed.set_footer(text=f"Made by Nrwls & Sparks")
 
+        if len(self.get_coinflips()) == 0:
+            embed.add_field(name="**No games to show**", value="Type !c [coins] to create a coinflip.", inline=True)
+            return embed
+
         creators = ""
         prices = ""
-        joiners = ""
 
         for coinflip in self.get_coinflips():
             if coinflip.is_joinable():
                 creators += f"{coinflip.get_creator().mention}\n"
                 prices += f"{coinflip.get_coins()} coins\n"
-                #joiners += "Joinable\n"
 
         embed.add_field(name="**__User__**", value=creators, inline=True)
         embed.add_field(name="**Stake**", value=prices, inline=True)
-        #embed.add_field(name="**__User__**", value=joiners, inline=True)
         return embed
 
-    def get_coinflip_setup_message(self):
-        embed = discord.Embed(title=f"Coinflips", color=discord.Color.red())
+    def get_coinflip_results_message(self):
+        embed = discord.Embed(title=f"Coinflip Results", color=discord.Color.red())
         embed.set_author(name="Lagspike™")
         embed.set_footer(text=f"Made by Nrwls & Sparks")
-        embed.add_field(name="**No games to show**", value="Type !c [coins] to create a coinflip.", inline=True)
+
+        #cf = [x for x in self.get_coinflips() if x.is_finished()]
+        print(self.get_coinflips())
+
+        if len(self.get_coinflips()) == 0:
+            embed.add_field(name="**No results to show**", value="Type !c [coins] to create a coinflip.", inline=True)
+            return embed
+        
+        winners = ""
+        prices = ""
+        losers = ""
+
+        for coinflip in self.get_coinflips():
+            if not coinflip.is_joinable():
+                winners += f"{coinflip.get_winner().mention}\n"
+                prices += f"{coinflip.get_coins()} coins\n"
+                losers += f"{coinflip.get_loser().mention}\n"
+
+        embed.add_field(name="**__Winner__**", value=winners, inline=True)
+        embed.add_field(name="**Stake**", value=prices, inline=True)
+        embed.add_field(name="**__Loser__**", value=losers, inline=True)
         return embed
