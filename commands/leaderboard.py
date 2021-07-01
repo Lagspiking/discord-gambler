@@ -33,4 +33,4 @@ class LeaderboardCommand(commands.Cog):
         embed.add_field(name="**__User__**", value=creators, inline=True)
         embed.add_field(name="**__Coins__**", value=coins, inline=True)
         await ctx.message.delete()
-        await bot_channel.send(embed=embed)
+        await bot_channel.send(embed=embed, delete_after=10)
