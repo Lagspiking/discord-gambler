@@ -29,10 +29,13 @@ class CoinsTasks(commands.Cog):
     @tasks.loop(seconds=30)
     async def giveaway_jackpot(self):
         if self._economy._jackpot >= 50000:
+            #This is pretty cool, didn't know it existed lmao
             winner = random.choice(self._economy._jackpot_eligable)
             
             self._economy.deposit(winner, self._economy._jackpot)
-            await self._bot.get_channel(859490586976845844).send(f"{winner.mention} has won the jackpot of {self._economy._jackpot}", delete_after=5)
+            #When sending a chat message, prefix the sentence with > for cooler looking markup.
+            await self._bot.get_channel(859490586976845844).send(f"> {winner.mention} has won the jackpot of {self._economy._jackpot}", delete_after=5)
+            #_variables are prefixed with _ because they're meant to be private. If you want to access/modify it, you should create a getter/setter x
             self._economy._jackpot = 0
 
     @coins_reward_task.before_loop
