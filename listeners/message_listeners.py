@@ -24,7 +24,7 @@ class MessageListeners(commands.Cog):
     #This event is called only if the command succeeded, i.e. all checks have passed and the user input it correctly.
     @commands.Cog.listener()
     async def on_command_completion(self, ctx):
-        pass
+        await ctx.message.delete()
 
     #An error handler that is called when an error is raised inside a command either through user input error, check failure, or an error in your own code.
     @commands.Cog.listener()
