@@ -41,7 +41,7 @@ class CoinflipCog(commands.Cog, name = "Coinflip"):
 
         if len(self.get_coinflips()) == 0 or len([x for x in self.get_coinflips() if x.is_joinable()]) == 0:
             embed.add_field(name="**No games to show**", value="\u200b", inline=True)
-            embed.add_field(name="**Commands**", value="Type _!c [coins]_ to create a coinflip.\n Type _!j [@mention]_ to join a coinflip.\n Type _!coins_ to check your wallet. \n Type _!leader_ to see the leaderboards.", inline=True)
+            embed.add_field(name="**Commands**", value="Type _!c [coins]_ to create a coinflip.\n Type _!j [@mention]_ to join a coinflip.\n Type _!coins_ to check your wallet. \n Type _!leader_ to see the leaderboards.", inline=False)
             return embed
 
         creators = ""
@@ -59,7 +59,7 @@ class CoinflipCog(commands.Cog, name = "Coinflip"):
         embed.add_field(name="**__User__**", value=creators, inline=True)
         embed.add_field(name="**__Stake__**", value=prices, inline=True)
 
-        embed.add_field(name="**Commands**", value="Type _!c [coins]_ to create a coinflip.\n Type _!j [@mention]_ to join a coinflip.\n Type _!coins_ to check your wallet. \n Type _!leader_ to see the leaderboards.", inline=True)
+        embed.add_field(name="**Commands**", value="Type _!c [coins]_ to create a coinflip.\n Type _!j [@mention]_ to join a coinflip.\n Type _!coins_ to check your wallet. \n Type _!leader_ to see the leaderboards.", inline=False)
 
         return embed
 
