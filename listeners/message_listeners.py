@@ -1,4 +1,5 @@
 from discord.ext import commands
+from decouple import config
 
 #https://discordpy.readthedocs.io/en/stable/api.html#event-reference
 class MessageListeners(commands.Cog):
@@ -8,7 +9,10 @@ class MessageListeners(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message):
-        pass
+        if message.channel.name == config('channel_name'):
+            if message.author != self._bot.user:
+                if not message.content.startswith("!"):
+                    await message.delete()
 
     #An event that is called when a command is found and is about to be invoked.
     #This event is called regardless of whether the command itself succeeds via error or completes.
