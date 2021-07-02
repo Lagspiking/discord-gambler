@@ -85,15 +85,14 @@ class CoinflipCommand(commands.Cog):
             await self.reset_messages()
 
     @commands.command(name = "wl", aliases=["winlose"])
-    async def on_remove_coinflip_command(self, ctx):
+    async def on_win_lose_command(self, ctx):
         if ctx.channel.name == config('channel_name'):
             await ctx.message.delete()
-            economy_cog = self.bot.get_cog("Economy")
             coinflip_cog = self.bot.get_cog("Coinflip")
 
-            wins = len([x for x in self.get_coinflips() if x.get_winner() == ctx.author])
-            lose = len([x for x in self.get_coinflips() if x.get_loser() == ctx.author])
-            await ctx.send(f"> {ctx.author.mention}, your win/lose is: {wins}/{lose}", delete_after=5)
+            wins = len([x for x in coinflip_cog.get_coinflips() if x.get_winner() == ctx.author])
+            lose = len([x for x in coinflip_cog.get_coinflips() if x.get_loser() == ctx.author])
+            await ctx.send(f"> {ctx.author.mention}, your win/lose is: {wins}/{lose}.", delete_after=5)
 
             await self.reset_messages()
 
