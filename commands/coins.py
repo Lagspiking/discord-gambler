@@ -36,7 +36,7 @@ class CoinsCommand(commands.Cog):
     async def on_give_command(self, ctx, member: discord.Member, coins: int):
         if ctx.channel.name == config('channel_name'):
             economy = self.bot.get_cog("Economy")
-
+            await ctx.message.delete()
             wallet = economy.get_wallet(ctx.author)
 
             if economy.has_coins(ctx.author, coins):
