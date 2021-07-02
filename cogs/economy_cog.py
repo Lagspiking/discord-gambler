@@ -6,7 +6,9 @@ class EconomyCog(commands.Cog, name = "Economy"):
     def __init__(self, bot):
         self._bot = bot
         self._wallets = {}
-        self._default_coins = 1000
+        self._default_coins = 1000000
+        self._jackpot = 0
+        self._jackpot_eligable = []
 
     #Checks if a member has a specific amount of coins in their wallet.
     def has_coins(self, member: discord.Member, coins: int):

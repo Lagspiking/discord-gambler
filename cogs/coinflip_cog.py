@@ -7,6 +7,7 @@ class CoinflipCog(commands.Cog, name = "Coinflip"):
 
     def __init__(self, bot):
         self._bot = bot
+        self._economy = self._bot.get_cog("Economy")
         self._coinflips = []
 
     def create_coinflip(self, member: discord.Member, coins: int):
@@ -19,6 +20,11 @@ class CoinflipCog(commands.Cog, name = "Coinflip"):
     def run_coinflip(self, creator: discord.Member):
         game = self.get_coinflip_game(creator)
         game.flip()
+
+        if game.get_winner() not in self._economy._jackpot_eligable:
+            self._economy._jackpot_eligable.append(game.get_winner())
+        elif game.get_loser() not in self._economy._jackpot_eligable:
+            self._economy._jackpot_eligable.append(game.get_loser())
 
     def get_coinflip_game(self, creator: discord.Member):
         game = None
@@ -37,10 +43,11 @@ class CoinflipCog(commands.Cog, name = "Coinflip"):
     def get_most_recent_coinflip_results(self):
         results = [x for x in self.get_coinflips() if not x.is_joinable()]
         return results[-10:]
+        
 
     def get_open_coinflips_message(self):
         embed = discord.Embed(title=f"__Joinable Coinflips__", color=discord.Color.red())
-        embed.set_author(name="Lagspike™")
+        embed.set_author(name=f"Lagspike™ | Jackpot: {self._economy._jackpot}")
         embed.set_footer(text=f"Made by Nrwls & Sparks")
 
         if len(self.get_coinflips()) == 0 or len([x for x in self.get_coinflips() if x.is_joinable()]) == 0:
@@ -64,7 +71,7 @@ class CoinflipCog(commands.Cog, name = "Coinflip"):
 
     def get_coinflip_results_message(self):
         embed = discord.Embed(title=f"__Previous Coinflips__", color=discord.Color.red())
-        embed.set_author(name="Lagspike™")
+        embed.set_author(name=f"Lagspike™")
         embed.set_footer(text=f"Made by Nrwls & Sparks")
 
         if len(self.get_coinflips()) == 0 or len([x for x in self.get_coinflips() if not x.is_joinable()]) == 0:

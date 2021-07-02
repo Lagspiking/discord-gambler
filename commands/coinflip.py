@@ -61,7 +61,8 @@ class CoinflipCommand(commands.Cog):
                 economy_cog.withdraw(ctx.author, coinflip_match.get_coins())
                 coinflip_cog.join_coinflip(member, ctx.author)
                 coinflip_cog.run_coinflip(coinflip_match.get_creator())
-                economy_cog.deposit(coinflip_match.get_winner(), coinflip_match.get_coins() * 2)
+                economy_cog.deposit(coinflip_match.get_winner(), int(coinflip_match.get_coins() * 1.7))
+                economy_cog._jackpot += int(coinflip_match.get_coins() * 0.3)
                 await self.reset_messages()
             else:
                 await ctx.message.delete()
