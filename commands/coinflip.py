@@ -87,7 +87,5 @@ class CoinflipCommand(commands.Cog):
 
     async def reset_messages(self):
         coinflip_cog = self.bot.get_cog("Coinflip")
-        print("calling open coinflips")
         asyncio.create_task(self._coinflip_open_message.edit(embed=coinflip_cog.get_open_coinflips_message()))
-        print("calling coinflip results")
         asyncio.create_task(self._coinflip_results_message.edit(embed=coinflip_cog.get_coinflip_results_message()))
