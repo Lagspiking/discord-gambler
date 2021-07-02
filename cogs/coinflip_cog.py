@@ -35,13 +35,12 @@ class CoinflipCog(commands.Cog, name = "Coinflip"):
         return self._coinflips
 
     def get_open_coinflips_message(self):
-        print("get_open_coinflips")
-        embed = discord.Embed(title=f"Coinflips", color=discord.Color.red())
+        embed = discord.Embed(title=f"__Coinflips__", color=discord.Color.red())
         embed.set_author(name="Lagspike™")
         embed.set_footer(text=f"Made by Nrwls & Sparks")
 
-        if len(self.get_coinflips()) == 0:
-            embed.add_field(name="**No games to show**", value="Type !c [coins] to create a coinflip.", inline=True)
+        if len(self.get_coinflips()) == 0 or len([x for x in self.get_coinflips() if x.is_joinable()]) == 0:
+            embed.add_field(name="**No games to show**", value="Type _!c [coins]_ to create a coinflip.\n Type _!j [@mention]_ to join a coinflip.\n Type _!coins_ to check your wallet. \n Type _!leader_ to see the leaderboards.", inline=True)
             return embed
 
         creators = ""
@@ -49,7 +48,6 @@ class CoinflipCog(commands.Cog, name = "Coinflip"):
 
         for coinflip in self.get_coinflips():
             if coinflip.is_joinable():
-                print("iterated open")
                 if coinflip.get_creator() is not None and coinflip.get_coins() is not None:
                     creators += f"{coinflip.get_creator().mention}\n"
                     prices += f"{coinflip.get_coins()} coins\n"
@@ -62,16 +60,12 @@ class CoinflipCog(commands.Cog, name = "Coinflip"):
         return embed
 
     def get_coinflip_results_message(self):
-        print("get_coinflips_results")
-        embed = discord.Embed(title=f"Coinflip Results", color=discord.Color.red())
+        embed = discord.Embed(title=f"__Coinflip Results__", color=discord.Color.red())
         embed.set_author(name="Lagspike™")
         embed.set_footer(text=f"Made by Nrwls & Sparks")
 
-        #cf = [x for x in self.get_coinflips() if x.is_finished()]
-        print(self.get_coinflips())
-
         if len(self.get_coinflips()) == 0:
-            embed.add_field(name="**No results to show**", value="Type !c [coins] to create a coinflip.", inline=True)
+            embed.add_field(name="**No results to show**", value="\u200b", inline=True)
             return embed
         
         winners = ""
@@ -80,7 +74,6 @@ class CoinflipCog(commands.Cog, name = "Coinflip"):
 
         for coinflip in self.get_coinflips():
             if not coinflip.is_joinable():
-                print("iterated results")
                 winners += f"{coinflip.get_winner().mention}\n"
                 prices += f"{coinflip.get_coins()} coins\n"
                 losers += f"{coinflip.get_loser().mention}\n"
