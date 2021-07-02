@@ -11,7 +11,7 @@ class LeaderboardCommand(commands.Cog):
     @commands.command(name="leader")
     async def on_leader_command(self, ctx):
         guild = discord.utils.get(self.bot.guilds, name="$ui$lide")
-        bot_channel = discord.utils.get(guild.text_channels, name="gamble-bot")
+        bot_channel = discord.utils.get(guild.text_channels, name=config('coinflip_channel_name'))
         economy = self.bot.get_cog("Economy")
         all_wallets = economy.get_all_wallets()
         sorted_wallets = sorted(all_wallets.items(), key=lambda x: x[1], reverse=True)
