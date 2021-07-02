@@ -15,8 +15,8 @@ class CoinflipCommand(commands.Cog):
     async def on_setup_coinflip_command(self, ctx):
         await ctx.message.delete()
         coinflip_cog = self.bot.get_cog("Coinflip")
-        self._coinflip_open_message = await ctx.send(embed=coinflip_cog.get_open_coinflips_message())
         self._coinflip_results_message = await ctx.send(embed=coinflip_cog.get_coinflip_results_message())
+        self._coinflip_open_message = await ctx.send(embed=coinflip_cog.get_open_coinflips_message())
 
     @commands.command(name = "create", aliases=["c"])
     async def on_create_coinflip_command(self, ctx, coins: int):
@@ -84,8 +84,20 @@ class CoinflipCommand(commands.Cog):
             economy_cog.deposit(ctx.author, coinflip_match.get_coins())
             await self.reset_messages()
 
+    @commands.command(name = "wl", aliases=["winlose"])
+    async def on_remove_coinflip_command(self, ctx):
+        if ctx.channel.name == config('channel_name'):
+            await ctx.message.delete()
+            economy_cog = self.bot.get_cog("Economy")
+            coinflip_cog = self.bot.get_cog("Coinflip")
+
+            wins = len([x for x in self.get_coinflips() if x.get_winner() == ctx.author])
+            lose = len([x for x in self.get_coinflips() if x.get_loser() == ctx.author])
+            await ctx.send(f"> {ctx.author.mention}, your win/lose is: {wins}/{lose}", delete_after=5)
+
+            await self.reset_messages()
 
     async def reset_messages(self):
         coinflip_cog = self.bot.get_cog("Coinflip")
-        asyncio.create_task(self._coinflip_open_message.edit(embed=coinflip_cog.get_open_coinflips_message()))
         asyncio.create_task(self._coinflip_results_message.edit(embed=coinflip_cog.get_coinflip_results_message()))
+        asyncio.create_task(self._coinflip_open_message.edit(embed=coinflip_cog.get_open_coinflips_message()))
