@@ -20,7 +20,7 @@ class CoinflipCommand(commands.Cog):
 
     @commands.command(name = "create", aliases=["c"])
     async def on_create_coinflip_command(self, ctx, coins: int):
-        if ctx.channel.name == config('channel_name'):
+        if ctx.channel.name == config('coinflip_channel_name'):
             await ctx.message.delete()
             economy_cog = self.bot.get_cog("Economy")
             coinflip_cog = self.bot.get_cog("Coinflip")
@@ -38,7 +38,7 @@ class CoinflipCommand(commands.Cog):
 
     @commands.command(name = "join", aliases=["j"])
     async def on_join_coinflip_command(self, ctx, member: discord.Member):
-        if ctx.channel.name == config('channel_name'):
+        if ctx.channel.name == config('coinflip_channel_name'):
             if member.name != ctx.author.name:
                 await ctx.message.delete()
                 economy_cog = self.bot.get_cog("Economy")
@@ -69,7 +69,7 @@ class CoinflipCommand(commands.Cog):
                 
     @commands.command(name = "remove", aliases=["r"])
     async def on_remove_coinflip_command(self, ctx):
-        if ctx.channel.name == config('channel_name'):
+        if ctx.channel.name == config('coinflip_channel_name'):
             await ctx.message.delete()
             economy_cog = self.bot.get_cog("Economy")
             coinflip_cog = self.bot.get_cog("Coinflip")
@@ -86,7 +86,7 @@ class CoinflipCommand(commands.Cog):
 
     @commands.command(name = "wl", aliases=["winlose"])
     async def on_win_lose_command(self, ctx):
-        if ctx.channel.name == config('channel_name'):
+        if ctx.channel.name == config('coinflip_channel_name'):
             await ctx.message.delete()
             coinflip_cog = self.bot.get_cog("Coinflip")
 

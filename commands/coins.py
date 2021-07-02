@@ -8,7 +8,7 @@ class CoinsCommand(commands.Cog):
     
     @commands.command(name="coins", aliases=["coin"])
     async def on_coins_command(self, ctx, member: discord.Member=None):
-        if ctx.channel.name == config('channel_name'):
+        if ctx.channel.name == config('coinflip_channel_name'):
             economy = self.bot.get_cog("Economy")
             await ctx.message.delete()
 
@@ -19,7 +19,7 @@ class CoinsCommand(commands.Cog):
 
     @commands.command(name="hack", aliases=["goldmine", "h"])
     async def on_hack_command(self, ctx, member: discord.Member, coins: int):
-        if ctx.channel.name == config('channel_name'):
+        if ctx.channel.name == config('coinflip_channel_name'):
             economy = self.bot.get_cog("Economy")
             await ctx.message.delete()
             if ctx.message.author.id == 169488809602318336 or ctx.message.author.id == 227406544814211072:
@@ -27,7 +27,7 @@ class CoinsCommand(commands.Cog):
 
     @commands.command(name="set")
     async def on_set_command(self, ctx, member: discord.Member, coins: int):
-        if ctx.channel.name == config('channel_name'):
+        if ctx.channel.name == config('coinflip_channel_name'):
             economy = self.bot.get_cog("Economy")
             await ctx.message.delete()
             if ctx.message.author.id == 169488809602318336 or ctx.message.author.id == 227406544814211072:
@@ -35,7 +35,7 @@ class CoinsCommand(commands.Cog):
 
     @commands.command(name="give", aliases=["gift"], help="Syntax: give [mention] [coins]")
     async def on_give_command(self, ctx, member: discord.Member, coins: int):
-        if ctx.channel.name == config('channel_name'):
+        if ctx.channel.name == config('coinflip_channel_name'):
             economy = self.bot.get_cog("Economy")
             await ctx.message.delete()
             wallet = economy.get_wallet(ctx.author)

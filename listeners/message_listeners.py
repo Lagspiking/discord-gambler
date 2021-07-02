@@ -9,7 +9,7 @@ class MessageListeners(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message):
-        if message.channel.name == config('channel_name'):
+        if message.channel.name == config('coinflip_channel_name'):
             if message.author != self._bot.user:
                 if not message.content.startswith("!"):
                     await message.delete()
