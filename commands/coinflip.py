@@ -28,9 +28,9 @@ class CoinflipCommand(commands.Cog):
             wallet = economy_cog.get_wallet(ctx.author)
             
             if coins <= 0:
-                await ctx.send(f"{ctx.author.mention}, you cannot create a zero/negative value coinflip.", delete_after=5)
+                await ctx.send(f"> {ctx.author.mention}, you cannot create a zero/negative value coinflip.", delete_after=5)
             elif wallet < coins:
-                await ctx.send(f"{ctx.author.mention}, you do not have enough coins for this coinflip.", delete_after=5)
+                await ctx.send(f"> {ctx.author.mention}, you do not have enough coins for this coinflip.", delete_after=5)
             elif wallet >= coins:
                 economy_cog.withdraw(ctx.author, coins)
                 coinflip_cog.create_coinflip(ctx.author, coins)
@@ -46,16 +46,16 @@ class CoinflipCommand(commands.Cog):
 
                 coinflip_match = coinflip_cog.get_coinflip_game(member)
                 if coinflip_match is None:
-                    await ctx.send(f"{ctx.author.mention}, a game by that user does not exist.", delete_after=5)
+                    await ctx.send(f"> {ctx.author.mention}, a game by that user does not exist.", delete_after=5)
                     return
 
                 if not coinflip_match.is_joinable():
-                    await ctx.send(f"{ctx.author.mention}, you cannot join that game.", delete_after=5)
+                    await ctx.send(f"> {ctx.author.mention}, you cannot join that game.", delete_after=5)
                     return
 
                 wallet = economy_cog.get_wallet(ctx.author)
                 if wallet < coinflip_match.get_coins():
-                    await ctx.send(f"{ctx.author.mention}, you do not have enough coins to join this coinflip.", delete_after=5)
+                    await ctx.send(f"> {ctx.author.mention}, you do not have enough coins to join this coinflip.", delete_after=5)
                     return
 
                 economy_cog.withdraw(ctx.author, coinflip_match.get_coins())
@@ -65,7 +65,7 @@ class CoinflipCommand(commands.Cog):
                 await self.reset_messages()
             else:
                 await ctx.message.delete()
-                await ctx.send(f"{ctx.author.mention}, you cannot stake yourself.", delete_after=5)
+                await ctx.send(f"> {ctx.author.mention}, you cannot stake yourself.", delete_after=5)
                 
     @commands.command(name = "remove", aliases=["r"])
     async def on_remove_coinflip_command(self, ctx):
@@ -77,7 +77,7 @@ class CoinflipCommand(commands.Cog):
             coinflip_match = coinflip_cog.get_coinflip_game(ctx.author)
 
             if coinflip_match is None:
-                await ctx.send(f"{ctx.author.mention}, you do not have a coinflip in progress.", delete_after=5)
+                await ctx.send(f"> {ctx.author.mention}, you do not have a coinflip in progress.", delete_after=5)
                 return
 
             coinflip_cog.remove_coinflip(ctx.author)

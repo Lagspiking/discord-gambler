@@ -14,9 +14,9 @@ class CoinsCommand(commands.Cog):
             await ctx.message.delete()
 
             if member is None:
-                await ctx.send(f"{ctx.author} has {economy.get_wallet(ctx.author)} coins available.", delete_after=5)
+                await ctx.send(f"> {ctx.author.mention} has {economy.get_wallet(ctx.author)} coins available.", delete_after=5)
             else:
-                await ctx.send(f"{member} has {economy.get_wallet(member)} coins available.", delete_after=5)
+                await ctx.send(f"> {member.mention}, you have {economy.get_wallet(member)} coins available.", delete_after=5)
 
     @commands.command(name="hack", aliases=["goldmine", "h"])
     async def on_hack_command(self, ctx, member: discord.Member, coins: int):
@@ -42,6 +42,6 @@ class CoinsCommand(commands.Cog):
             if economy.has_coins(ctx.author, coins):
                 economy.withdraw(ctx.author, coins)
                 economy.deposit(member, coins)
-                await ctx.send(f"{ctx.author} has sent {coins} coins to {member}.", delete_after=5)
+                await ctx.send(f"> {ctx.author.mention} has sent {coins} coins to {member.mention}.", delete_after=5)
             else:
-                await ctx.send(f"{ctx.author} you do not have enough coins to gift this person.", delete_after=5)
+                await ctx.send(f"> {ctx.author.mention} you do not have {coins} coins to give.", delete_after=5)
