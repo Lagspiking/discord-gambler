@@ -38,6 +38,7 @@ class CoinsTasks(commands.Cog):
 
             #_variables are prefixed with _ because they're meant to be private. If you want to access/modify it, you should create a getter/setter x
             self._economy._jackpot = 0
+            self._economy._jackpot_eligable = []
 
     @coins_reward_task.before_loop
     async def before_coins_reward_task(self):
