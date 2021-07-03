@@ -6,7 +6,7 @@ class EconomyCog(commands.Cog, name = "Economy"):
     def __init__(self, bot):
         self._bot = bot
         self._wallets = {}
-        self._default_coins = 0
+        self._default_coins = 1000
         self._jackpot = 0
         self._jackpot_eligable = []
 
