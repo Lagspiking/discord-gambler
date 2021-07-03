@@ -32,6 +32,7 @@ bot.add_cog(CoinsCommand(bot))
 bot.add_cog(CleanseCommand(bot))
 bot.add_cog(LeaderboardCommand(bot))
 bot.add_cog(CoinflipCommand(bot))
+bot.add_cog(SaveCommand(bot))
 
 #register our background tasks
 bot.add_cog(CoinsTasks(bot))
