@@ -19,9 +19,13 @@ class CoinflipCommand(commands.Cog):
         self._coinflip_open_message = await ctx.send(embed=coinflip_cog.get_open_coinflips_message())
 
     @commands.command(name = "create", aliases=["c"])
-    async def on_create_coinflip_command(self, ctx, coins: int):
+    async def on_create_coinflip_command(self, ctx, coins):
         if ctx.channel.name == config('coinflip_channel_name'):
             await ctx.message.delete()
+            thousands = coins.count('k')
+            coins = int(''.join([x for x in coins if x.isdigit()]))
+            for x in range(0, thousands):
+                coins = int(coins * 1000)
             economy_cog = self.bot.get_cog("Economy")
             coinflip_cog = self.bot.get_cog("Coinflip")
             #Get the users wallet/coins

@@ -7,6 +7,7 @@ class SaveCommand(commands.Cog):
     def __init__(self, bot):
         self._bot = bot
         self._economy_cog = self._bot.get_cog("Economy")
+        self._coinflip_cog = self._bot.get_cog("Coinflip")
         self._save_state = {}
 
     @commands.command(name="save", aliases=["s"])
@@ -14,6 +15,7 @@ class SaveCommand(commands.Cog):
         self._save_state['wallets'] = self._economy_cog.get_all_wallets()
         self._save_state['current_jackpot'] = self._economy_cog.get_jackpot()
         # self._save_state['jackpot_eligable'] = self._economy_cog.get_jackpot_eligable()
+        # self._save_state['coinflip_games'] = self._coinflip_cog.get_coinflips()
 
         with open('save.json', 'w') as outfile:
             json.dump(self._save_state, outfile, sort_keys=True, indent=4)
