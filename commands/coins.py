@@ -36,13 +36,16 @@ class CoinsCommand(commands.Cog):
     @commands.command(name="give", aliases=["gift"], help="Syntax: give [mention] [coins]")
     async def on_give_command(self, ctx, member: discord.Member, coins: int):
         if ctx.channel.name == config('coinflip_channel_name'):
-            economy = self.bot.get_cog("Economy")
-            await ctx.message.delete()
-            wallet = economy.get_wallet(ctx.author)
+            if coins > 0:
+                economy = self.bot.get_cog("Economy")
+                await ctx.message.delete()
+                wallet = economy.get_wallet(ctx.author)
 
-            if economy.has_coins(ctx.author, coins):
-                economy.withdraw(ctx.author, coins)
-                economy.deposit(member, coins)
-                await ctx.send(f"> {ctx.author.mention} has sent {coins} coins to {member.mention}.", delete_after=5)
+                if economy.has_coins(ctx.author, coins):
+                    economy.withdraw(ctx.author, coins)
+                    economy.deposit(member, coins)
+                    await ctx.send(f"> {ctx.author.mention} has sent {coins} coins to {member.mention}.", delete_after=5)
+                else:
+                    await ctx.send(f"> {ctx.author.mention} you do not have {coins} coins to give.", delete_after=5)
             else:
-                await ctx.send(f"> {ctx.author.mention} you do not have {coins} coins to give.", delete_after=5)
+                await ctx.send(f"> {ctx.author.mention} you cannot give less than 0 coins.", delete_after=5)
