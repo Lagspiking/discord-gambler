@@ -3,7 +3,7 @@ import datetime
 from discord.ext import commands
 from games.coinflip_game import CoinflipGame
 
-class PlayerCog(commands.Cog, name = "Player"):
+class PlayersCog(commands.Cog, name = "Players"):
     def __init__(self, bot):
         self._bot = bot
         self._players = {}
