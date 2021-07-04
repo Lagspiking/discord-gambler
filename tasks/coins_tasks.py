@@ -9,7 +9,6 @@ class CoinsTasks(commands.Cog):
         self._bot = bot
         self._economy = self._bot.get_cog("Economy")
         self._coinflip_cog = self._bot.get_cog("Coinflip")
-        self._voice = {}
         self.coins_reward_task.start()
         self.giveaway_jackpot.start()
 
@@ -19,10 +18,10 @@ class CoinsTasks(commands.Cog):
 
     @tasks.loop(seconds=10)
     async def coins_reward_task(self):
-        if len(self._voice) == 0:
-            self.get_users_in_voice_channels()
+        
+        users = self.get_users_in_voice_channels()
 
-        for memberid in self._voice:
+        for memberid in users:
             member = await self._bot.get_guild(417762950200295444).fetch_member(memberid)
             self._economy.deposit(member, 50)
 
@@ -51,5 +50,4 @@ class CoinsTasks(commands.Cog):
     def get_users_in_voice_channels(self):
         for channel in self._bot.get_guild(417762950200295444).channels:
             if channel.type == discord.ChannelType.voice and len(channel.members) > 0:
-                for member in channel.members:
-                    self._voice[str(member.id)] = datetime.now()
+                return channel.members
