@@ -1,4 +1,4 @@
-# discord-gambler
+# Discord Gambling Bot
 
 ## Conventions:
 Modules:
