@@ -1,4 +1,5 @@
 import discord
+import discord.utils
 from discord.ext import commands, tasks
 from decouple import config
 from datetime import datetime
@@ -21,8 +22,7 @@ class CoinsTasks(commands.Cog):
         
         users = self.get_users_in_voice_channels()
 
-        for memberid in users:
-            member = await self._bot.get_guild(417762950200295444).fetch_member(memberid)
+        for member in users:
             self._economy.deposit(member, 50)
 
     @tasks.loop(seconds=30)
