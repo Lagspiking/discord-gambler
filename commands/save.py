@@ -16,7 +16,8 @@ class SaveCommand(commands.Cog):
         self._save_state['current_jackpot'] = self._economy_cog.get_jackpot()
         # self._save_state['jackpot_eligable'] = self._economy_cog.get_jackpot_eligable()
         # self._save_state['coinflip_games'] = self._coinflip_cog.get_coinflips()
-
+        
+        #TODO: Handle saving and loading within a cog
         with open('save.json', 'w') as outfile:
             json.dump(self._save_state, outfile, sort_keys=True, indent=4)
 
