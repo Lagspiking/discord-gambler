@@ -35,6 +35,18 @@ class CoinflipCog(commands.Cog, name = "Coinflip"):
             if g.get_creator() == creator:
                 game = g
         return game
+    
+    def get_giveaway(self):
+        return self._giveaway
+
+    def set_giveaway(self, giveaway):
+        self._giveaway = giveaway
+
+    def get_giveaway_eligable(self):
+        return self._giveaway_eligable
+
+    def set_giveaway_eligable(self, eligable):
+        self._giveaway_eligable = eligable
 
     def remove_coinflip(self, member: discord.Member):
         game = self.get_coinflip_game(member)
