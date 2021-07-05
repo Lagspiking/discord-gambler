@@ -20,10 +20,10 @@ class CoinsTasks(commands.Cog):
     @tasks.loop(seconds=10)
     async def coins_reward_task(self):
         
-        users = self.get_users_in_voice_channels()
-
-        for member in users:
-            self._economy.deposit(member, 50)
+        for channel in self._bot.get_guild(417762950200295444).channels:
+            if channel.type == discord.ChannelType.voice and len(channel.members) > 0:
+                for member in channel.members:
+                    self._economy.deposit(member, 50)
 
     @tasks.loop(seconds=30)
     async def giveaway_jackpot(self):
