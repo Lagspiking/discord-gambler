@@ -50,7 +50,7 @@ class CoinflipCog(commands.Cog, name = "Coinflip"):
 
     def get_open_coinflips_message(self):
         embed = discord.Embed(title=f"__Joinable Coinflips__", color=discord.Color.red())
-        embed.set_author(name=f"Lagspike™ | Jackpot: {self._economy._jackpot}")
+        embed.set_author(name=f"Lagspike™ | Giveaway: {self._giveaway}")
         embed.set_footer(text=f"Made by Nrwls & Sparks")
 
         if len(self.get_coinflips()) == 0 or len([x for x in self.get_coinflips() if x.is_joinable()]) == 0:
