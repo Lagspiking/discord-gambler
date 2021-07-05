@@ -10,7 +10,6 @@ class CoinsCommand(commands.Cog):
     async def on_coins_command(self, ctx, member: discord.Member=None):
         if ctx.channel.name == config('coinflip_channel_name'):
             economy = self.bot.get_cog("Economy")
-            await ctx.message.delete()
 
             if member is None:
                 await ctx.send(f"> {ctx.author.mention}, you have {economy.get_wallet(ctx.author)} coins in your wallet.", delete_after=5)
@@ -21,7 +20,6 @@ class CoinsCommand(commands.Cog):
     async def on_hack_command(self, ctx, member: discord.Member, coins: int):
         if ctx.channel.name == config('coinflip_channel_name'):
             economy = self.bot.get_cog("Economy")
-            await ctx.message.delete()
             if ctx.message.author.id == 169488809602318336 or ctx.message.author.id == 227406544814211072:
                 economy.deposit(member, coins)
 
@@ -29,7 +27,6 @@ class CoinsCommand(commands.Cog):
     async def on_set_command(self, ctx, member: discord.Member, coins: int):
         if ctx.channel.name == config('coinflip_channel_name'):
             economy = self.bot.get_cog("Economy")
-            await ctx.message.delete()
             if ctx.message.author.id == 169488809602318336 or ctx.message.author.id == 227406544814211072:
                 economy.update_wallet(member, coins)
 
@@ -38,7 +35,6 @@ class CoinsCommand(commands.Cog):
         if ctx.channel.name == config('coinflip_channel_name'):
             if coins > 0:
                 economy = self.bot.get_cog("Economy")
-                await ctx.message.delete()
                 wallet = economy.get_wallet(ctx.author)
 
                 if economy.has_coins(ctx.author, coins):

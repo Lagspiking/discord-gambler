@@ -13,7 +13,6 @@ class CoinflipCommand(commands.Cog):
 
     @commands.command(name = "setup")
     async def on_setup_coinflip_command(self, ctx):
-        await ctx.message.delete()
         coinflip_cog = self.bot.get_cog("Coinflip")
         self._coinflip_results_message = await ctx.send(embed=coinflip_cog.get_coinflip_results_message())
         self._coinflip_open_message = await ctx.send(embed=coinflip_cog.get_open_coinflips_message())
@@ -21,7 +20,6 @@ class CoinflipCommand(commands.Cog):
     @commands.command(name = "create", aliases=["c"])
     async def on_create_coinflip_command(self, ctx, coins):
         if ctx.channel.name == config('coinflip_channel_name'):
-            await ctx.message.delete()
             thousands = coins.count('k')
             coins = int(''.join([x for x in coins if x.isdigit()]))
             for x in range(0, thousands):
@@ -44,7 +42,6 @@ class CoinflipCommand(commands.Cog):
     async def on_join_coinflip_command(self, ctx, member: discord.Member):
         if ctx.channel.name == config('coinflip_channel_name'):
             if member.name != ctx.author.name:
-                await ctx.message.delete()
                 economy_cog = self.bot.get_cog("Economy")
                 coinflip_cog = self.bot.get_cog("Coinflip")
 
@@ -69,13 +66,11 @@ class CoinflipCommand(commands.Cog):
                 economy_cog._jackpot += int(coinflip_match.get_coins() * 0.3)
                 await self.reset_messages()
             else:
-                await ctx.message.delete()
                 await ctx.send(f"> {ctx.author.mention}, you cannot stake yourself.", delete_after=5)
                 
     @commands.command(name = "remove", aliases=["r"])
     async def on_remove_coinflip_command(self, ctx):
         if ctx.channel.name == config('coinflip_channel_name'):
-            await ctx.message.delete()
             economy_cog = self.bot.get_cog("Economy")
             coinflip_cog = self.bot.get_cog("Coinflip")
 
@@ -92,7 +87,6 @@ class CoinflipCommand(commands.Cog):
     @commands.command(name = "wl", aliases=["winlose"])
     async def on_win_lose_command(self, ctx):
         if ctx.channel.name == config('coinflip_channel_name'):
-            await ctx.message.delete()
             coinflip_cog = self.bot.get_cog("Coinflip")
 
             wins = len([x for x in coinflip_cog.get_coinflips() if x.get_winner() == ctx.author])
