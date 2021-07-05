@@ -9,6 +9,8 @@ class CoinflipCog(commands.Cog, name = "Coinflip"):
         self._bot = bot
         self._economy = self._bot.get_cog("Economy")
         self._coinflips = []
+        self._giveaway = 0
+        self._giveaway_eligable = []
 
     def create_coinflip(self, member: discord.Member, coins: int):
         self._coinflips.append(CoinflipGame(member, coins))
@@ -21,10 +23,11 @@ class CoinflipCog(commands.Cog, name = "Coinflip"):
         game = self.get_coinflip_game(creator)
         game.flip()
 
-        if game.get_winner() not in self._economy._jackpot_eligable:
-            self._economy._jackpot_eligable.append(game.get_winner())
-        elif game.get_loser() not in self._economy._jackpot_eligable:
-            self._economy._jackpot_eligable.append(game.get_loser())
+        if game.get_winner() not in self._giveaway_eligable:
+            self._giveaway_eligable.append(game.get_winner())
+        
+        if game.get_loser() not in self._giveaway_eligable:
+            self._giveaway_eligable.append(game.get_loser())
 
     def get_coinflip_game(self, creator: discord.Member):
         game = None

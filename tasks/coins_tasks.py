@@ -47,6 +47,8 @@ class CoinsTasks(commands.Cog):
     async def before_giveaway_jackpot(self):
         await self._bot.wait_until_ready()
 
+    #TODO: This function doesn't actually work correctly. It returns on the first voice channel but doesn't continue iterating.
+    #This is an oversight on my part, will fix.
     def get_users_in_voice_channels(self):
         for channel in self._bot.get_guild(417762950200295444).channels:
             if channel.type == discord.ChannelType.voice and len(channel.members) > 0:

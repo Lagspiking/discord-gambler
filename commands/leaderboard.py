@@ -8,7 +8,7 @@ class LeaderboardCommand(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
     
-    @commands.command(name="leader")
+    @commands.command(name="leader", aliases=["leaderboard", "leaderboards", "lb"])
     async def on_leader_command(self, ctx):
         guild = discord.utils.get(self.bot.guilds, name="$ui$lide")
         bot_channel = discord.utils.get(guild.text_channels, name=config('coinflip_channel_name'))
