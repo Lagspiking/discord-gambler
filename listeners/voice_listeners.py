@@ -1,4 +1,8 @@
 from discord.ext import commands
+import discord
+from asyncio import sleep
+import random
+import glob
 
 #https://discordpy.readthedocs.io/en/stable/api.html#event-reference
 class VoiceListeners(commands.Cog):
@@ -15,4 +19,13 @@ class VoiceListeners(commands.Cog):
     #This requires Intents.voice_states to be enabled.
     @commands.Cog.listener()
     async def on_voice_state_update(self, member, before, after):
-        pass
+        if not before.channel and after.channel:
+            vc = await after.channel.connect()
+            voice_channel = after.channel.guild.voice_client
+
+            voice_channel.play(discord.FFmpegPCMAudio(executable="libs/ffmpeg.exe", source=random.choice(glob.glob("sounds/*.mp3"))))
+            vc.source = discord.PCMVolumeTransformer(vc.source, volume=0.5)
+            while vc.is_playing():
+                await sleep(1)
+
+            await vc.disconnect()
