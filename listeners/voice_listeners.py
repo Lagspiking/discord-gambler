@@ -19,6 +19,8 @@ class VoiceListeners(commands.Cog):
     #This requires Intents.voice_states to be enabled.
     @commands.Cog.listener()
     async def on_voice_state_update(self, member, before, after):
+        #If a user has joined a voice chat NOT moved voice chat
+        #TODO: Scrape sounds from a website/stream them instead
         if not before.channel and after.channel:
             vc = await after.channel.connect()
             voice_channel = after.channel.guild.voice_client
