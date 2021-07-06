@@ -29,4 +29,7 @@ class MessageListeners(commands.Cog):
     #An error handler that is called when an error is raised inside a command either through user input error, check failure, or an error in your own code.
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
-        await ctx.message.delete()
+        try:
+            await ctx.message.delete()
+        except:
+            pass
