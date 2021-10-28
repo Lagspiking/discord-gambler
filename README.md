@@ -1,5 +1,9 @@
 # Discord Gambling Bot
 
+## Setup
+You will need to uninstall discord.py using command "pip uninstall discord.py"
+Then install pycord using command "py -3 -m pip install -U py-cord"
+
 ## Conventions:
 Modules:
 Modules should have short, all-lowercase names. Underscores can be used in the module name if it improves readability. Python packages should also have short, all-lowercase names, although the use of underscores is discouraged.

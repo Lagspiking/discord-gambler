@@ -1,16 +1,17 @@
 import discord
 import datetime
 from discord.ext import commands
-from games.coinflip_game import CoinflipGame
+from discord_gambler.games.coinflip_game import CoinflipGame
 
-class PlayersCog(commands.Cog, name = "Players"):
+
+class PlayersCog(commands.Cog, name="Players"):
     def __init__(self, bot):
         self._bot = bot
         self._players = {}
-    
+
     def load_players(self):
-        #Load players from a json file locally or something
-        #so that we can maintain their wallet state or coinflips
+        # Load players from a json file locally or something
+        # so that we can maintain their wallet state or coinflips
         pass
 
     def add_player(self, member: discord.Member):
@@ -25,7 +26,8 @@ class PlayersCog(commands.Cog, name = "Players"):
     def get_players(self):
         return self._players
 
-class Player():
+
+class Player:
     def __init__(self, member: discord.Member):
         self._member = member
         self._wallet = Wallet(1000)
@@ -55,7 +57,8 @@ class Player():
     last_active = property(get_last_active, set_last_active)
     last_updated = property(get_last_updated, set_last_updated)
 
-class Wallet():
+
+class Wallet:
     def __init__(self, coins: int):
         self._coins = coins
 
