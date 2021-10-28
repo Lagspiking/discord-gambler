@@ -6,7 +6,6 @@ import discord
 import logging
 from discord.ext import commands
 from decouple import config
-import sqlite3
 
 logging.basicConfig(level=logging.INFO)
 
@@ -24,7 +23,7 @@ bot.add_cog(MemberListeners(bot))
 bot.add_cog(GuildListeners(bot))
 
 # register our logic cogs
-bot.add_cog(DatabaseCog(bot))
+# bot.add_cog(DatabaseCog(bot))
 bot.add_cog(EconomyCog(bot))
 bot.add_cog(CoinflipCog(bot))
 
@@ -38,7 +37,3 @@ bot.add_cog(SoundsCommand(bot))
 
 # register our background tasks
 bot.add_cog(CoinsTasks(bot))
-
-# create connection to our sql database
-con = sqlite3.connect("gambler.db")
-cur = con.cursor()
