@@ -6,11 +6,12 @@ import discord
 import logging
 from discord.ext import commands
 from decouple import config
+import os
 
 logging.basicConfig(level=logging.INFO)
 
 # setup Discord
-_token = config("discord_token")
+_token = os.environ.get("discord_token")
 intents = discord.Intents.default()
 intents.members = True
 bot = commands.Bot(command_prefix="!", intents=intents)
