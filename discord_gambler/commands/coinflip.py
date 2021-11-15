@@ -135,6 +135,12 @@ class CoinflipCommand(commands.Cog):
 
             await self.reset_messages()
 
+    
+    @commands.command(name="reset", aliases=["r"])
+    async def on_reset_command(self, ctx):
+        if ctx.channel.name == os.environ.get("coinflip_channel_name"):
+            await self.reset_messages()
+
     async def reset_messages(self):
         coinflip_cog = self.bot.get_cog("Coinflip")
         asyncio.create_task(
