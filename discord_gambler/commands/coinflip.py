@@ -136,7 +136,7 @@ class CoinflipCommand(commands.Cog):
             await self.reset_messages()
 
     
-    @commands.command(name="reset", aliases=["r"])
+    @commands.command(name="reset")
     async def on_reset_command(self, ctx):
         if ctx.channel.name == os.environ.get("coinflip_channel_name"):
             await self.reset_messages()
