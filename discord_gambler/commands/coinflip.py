@@ -86,7 +86,7 @@ class CoinflipCommand(commands.Cog):
                 economy_cog.deposit(
                     coinflip_match.get_winner(), int(coinflip_match.get_coins() * 1.7)
                 )
-                economy_cog._jackpot += int(coinflip_match.get_coins() * 0.3)
+                coinflip_cog._giveaway += int(coinflip_match.get_coins() * 0.3)
                 await self.reset_messages()
             else:
                 await ctx.send(

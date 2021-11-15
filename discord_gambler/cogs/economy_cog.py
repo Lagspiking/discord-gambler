@@ -7,24 +7,6 @@ class EconomyCog(commands.Cog, name = "Economy"):
         self._bot = bot
         self._wallets = {}
         self._default_coins = 1000
-        self._jackpot = 0
-        self._jackpot_eligable = []
-
-    #Get jackpot
-    def get_jackpot(self):
-        return self._jackpot
-
-    #Set jackpot
-    def set_jackpot_eligable(self, jackpot_eligable):
-        self._jackpot_eligable = jackpot_eligable
-
-    #Get jackpot eligable
-    def get_jackpot_eligable(self):
-        return self._jackpot_eligable
-
-    #Set jackpot eligable
-    def set_jackpot(self, jackpot):
-        self._jackpot = jackpot
 
     #Checks if a member has a specific amount of coins in their wallet.
     def has_coins(self, member: discord.Member, coins: int):
