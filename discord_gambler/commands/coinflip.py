@@ -83,9 +83,13 @@ class CoinflipCommand(commands.Cog):
                 economy_cog.withdraw(ctx.author, coinflip_match.get_coins())
                 coinflip_cog.join_coinflip(member, ctx.author)
                 coinflip_cog.run_coinflip(coinflip_match.get_creator())
+
+                #Give the winner the coins minus the giveaway tax
                 economy_cog.deposit(
                     coinflip_match.get_winner(), int(coinflip_match.get_coins() * 1.7)
                 )
+
+                #Tax the house takes to populate the giveaway
                 coinflip_cog._giveaway += int(coinflip_match.get_coins() * 0.3)
                 await self.reset_messages()
             else:
