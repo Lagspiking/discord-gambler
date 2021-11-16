@@ -1,7 +1,7 @@
 import discord
 import logging
 from discord.ext import commands
-from decouple import config
+from decouple import config, UndefinedValueError
 import os
 
 logging.basicConfig(level=logging.INFO)
@@ -12,7 +12,7 @@ try:
     _coinflip_channel = config("coinflip_channel_name")
     _guild_id = int(config("guild_id"))
     logging.info(f"Local Config File found")
-except:
+except UndefinedValueError:
     _token = os.environ.get("discord_token")
     _coinflip_channel = os.environ.get("coinflip_channel_name")
     _guild_id = os.environ.get("guild_id")
