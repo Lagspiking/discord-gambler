@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 from decouple import config
-from discord_gambler import _coinflip_channel
+from discord_gambler import _coinflip_channel, _guild_id
 import typing
 import datetime
 import asyncio
@@ -26,7 +26,7 @@ class CoinflipCommand(commands.Cog):
 
     @commands.command(name="create", aliases=["c"])
     async def on_create_coinflip_command(self, ctx, coins):
-        if ctx.channel.name == _coinflip_channel:
+        if ctx.channel.name == _coinflip_channel and ctx.guild.id == _guild_id:
             thousands = coins.count("k")
             coins = int("".join([x for x in coins if x.isdigit()]))
             for x in range(0, thousands):
@@ -53,7 +53,7 @@ class CoinflipCommand(commands.Cog):
 
     @commands.command(name="join", aliases=["j"])
     async def on_join_coinflip_command(self, ctx, member: discord.Member):
-        if ctx.channel.name == _coinflip_channel:
+        if ctx.channel.name == _coinflip_channel and ctx.guild.id == _guild_id:
             if member.name != ctx.author.name:
                 economy_cog = self.bot.get_cog("Economy")
                 coinflip_cog = self.bot.get_cog("Coinflip")
@@ -101,7 +101,7 @@ class CoinflipCommand(commands.Cog):
 
     @commands.command(name="remove", aliases=["r"])
     async def on_remove_coinflip_command(self, ctx):
-        if ctx.channel.name == _coinflip_channel:
+        if ctx.channel.name == _coinflip_channel and ctx.guild.id == _guild_id:
             economy_cog = self.bot.get_cog("Economy")
             coinflip_cog = self.bot.get_cog("Coinflip")
 
@@ -120,7 +120,7 @@ class CoinflipCommand(commands.Cog):
 
     @commands.command(name="wl", aliases=["winlose"])
     async def on_win_lose_command(self, ctx):
-        if ctx.channel.name == _coinflip_channel:
+        if ctx.channel.name == _coinflip_channel and ctx.guild.id == _guild_id:
             coinflip_cog = self.bot.get_cog("Coinflip")
 
             wins = len(
@@ -142,7 +142,7 @@ class CoinflipCommand(commands.Cog):
 
     @commands.command(name="reset")
     async def on_reset_command(self, ctx):
-        if ctx.channel.name == _coinflip_channel:
+        if ctx.channel.name == _coinflip_channel and ctx.guild.id == _guild_id:
             await self.reset_messages()
 
     async def reset_messages(self):

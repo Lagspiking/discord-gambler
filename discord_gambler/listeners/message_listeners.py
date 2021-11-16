@@ -1,5 +1,6 @@
 from discord.ext import commands
 from decouple import config
+from discord_gambler import _coinflip_channel, _guild_id
 import os
 
 # https://discordpy.readthedocs.io/en/stable/api.html#event-reference
@@ -9,7 +10,7 @@ class MessageListeners(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message):
-        if message.channel.name == os.environ.get("coinflip_channel_name"):
+        if message.channel.name == _coinflip_channel:
             if message.author != self._bot.user:
                 if not message.content.startswith("!"):
                     try:
