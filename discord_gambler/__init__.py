@@ -8,7 +8,7 @@ import os
 try:
     _token = config("discord_token")
     _coinflip_channel = config("coinflip_channel_name")
-    _guild_id = config("guild_id")
+    _guild_id = int(config("guild_id"))
 except:
     _token = os.environ.get("discord_token")
     _coinflip_channel = os.environ.get("coinflip_channel_name")
