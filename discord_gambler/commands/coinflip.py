@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 from decouple import config
+from discord_gambler import _coinflip_channel
 import typing
 import datetime
 import asyncio
@@ -25,7 +26,7 @@ class CoinflipCommand(commands.Cog):
 
     @commands.command(name="create", aliases=["c"])
     async def on_create_coinflip_command(self, ctx, coins):
-        if ctx.channel.name == os.environ.get("coinflip_channel_name"):
+        if ctx.channel.name == _coinflip_channel:
             thousands = coins.count("k")
             coins = int("".join([x for x in coins if x.isdigit()]))
             for x in range(0, thousands):
@@ -52,7 +53,7 @@ class CoinflipCommand(commands.Cog):
 
     @commands.command(name="join", aliases=["j"])
     async def on_join_coinflip_command(self, ctx, member: discord.Member):
-        if ctx.channel.name == os.environ.get("coinflip_channel_name"):
+        if ctx.channel.name == _coinflip_channel:
             if member.name != ctx.author.name:
                 economy_cog = self.bot.get_cog("Economy")
                 coinflip_cog = self.bot.get_cog("Coinflip")
@@ -84,12 +85,12 @@ class CoinflipCommand(commands.Cog):
                 coinflip_cog.join_coinflip(member, ctx.author)
                 coinflip_cog.run_coinflip(coinflip_match.get_creator())
 
-                #Give the winner the coins minus the giveaway tax
+                # Give the winner the coins minus the giveaway tax
                 economy_cog.deposit(
                     coinflip_match.get_winner(), int(coinflip_match.get_coins() * 1.7)
                 )
 
-                #Tax the house takes to populate the giveaway
+                # Tax the house takes to populate the giveaway
                 coinflip_cog._giveaway += int(coinflip_match.get_coins() * 0.3)
                 await self.reset_messages()
             else:
@@ -100,7 +101,7 @@ class CoinflipCommand(commands.Cog):
 
     @commands.command(name="remove", aliases=["r"])
     async def on_remove_coinflip_command(self, ctx):
-        if ctx.channel.name == os.environ.get("coinflip_channel_name"):
+        if ctx.channel.name == _coinflip_channel:
             economy_cog = self.bot.get_cog("Economy")
             coinflip_cog = self.bot.get_cog("Coinflip")
 
@@ -119,7 +120,7 @@ class CoinflipCommand(commands.Cog):
 
     @commands.command(name="wl", aliases=["winlose"])
     async def on_win_lose_command(self, ctx):
-        if ctx.channel.name == os.environ.get("coinflip_channel_name"):
+        if ctx.channel.name == _coinflip_channel:
             coinflip_cog = self.bot.get_cog("Coinflip")
 
             wins = len(
@@ -139,10 +140,9 @@ class CoinflipCommand(commands.Cog):
 
             await self.reset_messages()
 
-    
     @commands.command(name="reset")
     async def on_reset_command(self, ctx):
-        if ctx.channel.name == os.environ.get("coinflip_channel_name"):
+        if ctx.channel.name == _coinflip_channel:
             await self.reset_messages()
 
     async def reset_messages(self):

@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 from decouple import config
+from discord_gambler import _coinflip_channel
 import os
 
 
@@ -10,7 +11,7 @@ class CoinsCommand(commands.Cog):
 
     @commands.command(name="coins", aliases=["coin"])
     async def on_coins_command(self, ctx, member: discord.Member = None):
-        if ctx.channel.name == os.environ.get("coinflip_channel_name"):
+        if ctx.channel.name == _coinflip_channel:
             economy = self.bot.get_cog("Economy")
 
             if member is None:
@@ -26,7 +27,7 @@ class CoinsCommand(commands.Cog):
 
     @commands.command(name="hack", aliases=["goldmine", "h"])
     async def on_hack_command(self, ctx, member: discord.Member, coins: int):
-        if ctx.channel.name == os.environ.get("coinflip_channel_name"):
+        if ctx.channel.name == _coinflip_channel:
             economy = self.bot.get_cog("Economy")
             if (
                 ctx.message.author.id == 169488809602318336
@@ -36,7 +37,7 @@ class CoinsCommand(commands.Cog):
 
     @commands.command(name="set")
     async def on_set_command(self, ctx, member: discord.Member, coins: int):
-        if ctx.channel.name == os.environ.get("coinflip_channel_name"):
+        if ctx.channel.name == _coinflip_channel:
             economy = self.bot.get_cog("Economy")
             if (
                 ctx.message.author.id == 169488809602318336
@@ -48,7 +49,7 @@ class CoinsCommand(commands.Cog):
         name="give", aliases=["gift"], help="Syntax: give [mention] [coins]"
     )
     async def on_give_command(self, ctx, member: discord.Member, coins: int):
-        if ctx.channel.name == os.environ.get("coinflip_channel_name"):
+        if ctx.channel.name == _coinflip_channel:
             if coins > 0:
                 economy = self.bot.get_cog("Economy")
                 wallet = economy.get_wallet(ctx.author)

@@ -8,10 +8,6 @@ class SaveCommand(commands.Cog):
         self._economy_cog = self._bot.get_cog("Economy")
         self._coinflip_cog = self._bot.get_cog("Coinflip")
         self._save_state = {}
-        try:
-            self.on_load_command()
-        except:
-            pass
 
     @commands.command(name="save", aliases=["s"])
     async def on_save_command(self, ctx):

@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 from decouple import config
+from discord_gambler import _coinflip_channel, _guild_id
 import datetime
 import asyncio
 import os
@@ -12,10 +13,8 @@ class LeaderboardCommand(commands.Cog):
 
     @commands.command(name="leader", aliases=["leaderboard", "leaderboards", "lb"])
     async def on_leader_command(self, ctx):
-        guild = discord.utils.get(self.bot.guilds, name="$ui$lide")
-        bot_channel = discord.utils.get(
-            guild.text_channels, name=os.environ.get("coinflip_channel_name")
-        )
+        guild = discord.utils.get(self.bot.guilds, id=_guild_id)
+        bot_channel = discord.utils.get(guild.text_channels, name=_coinflip_channel)
         economy = self.bot.get_cog("Economy")
         all_wallets = economy.get_all_wallets()
         sorted_wallets = sorted(all_wallets.items(), key=lambda x: x[1], reverse=True)

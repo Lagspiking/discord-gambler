@@ -1,17 +1,27 @@
-from discord_gambler.listeners import *
-from discord_gambler.cogs import *
-from discord_gambler.commands import *
-from discord_gambler.tasks import *
 import discord
 import logging
 from discord.ext import commands
 from decouple import config
 import os
 
+# setup Discord
+try:
+    _token = config("discord_token")
+    _coinflip_channel = config("coinflip_channel_name")
+    _guild_id = config("guild_id")
+except:
+    _token = os.environ.get("discord_token")
+    _coinflip_channel = os.environ.get("coinflip_channel_name")
+    _guild_id = os.environ.get("guild_id")
+
+from discord_gambler.listeners import *
+from discord_gambler.cogs import *
+from discord_gambler.commands import *
+from discord_gambler.tasks import *
+
 logging.basicConfig(level=logging.INFO)
 
-# setup Discord
-_token = os.environ.get("discord_token")
+
 intents = discord.Intents.default()
 intents.members = True
 bot = commands.Bot(command_prefix="!", intents=intents)
