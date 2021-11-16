@@ -27,10 +27,13 @@ class SaveCommand(commands.Cog):
 
     @staticmethod
     def load_data(self):
-        with open("save.json") as outfile:
-            data = json.load(outfile)
-            self._economy_cog.set_all_wallets(data["wallets"])
-            self._coinflip_cog.set_giveaway(data["current_jackpot"])
+        try:
+            with open("save.json") as outfile:
+                data = json.load(outfile)
+                self._economy_cog.set_all_wallets(data["wallets"])
+                self._coinflip_cog.set_giveaway(data["current_jackpot"])
+        except:
+            pass
 
     @commands.command(name="load", aliases=["l"])
     async def on_load_command(self, ctx):
