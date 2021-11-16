@@ -1,1 +1,0 @@
-#TODO: Commands for setting up the bot should be handled inside here.

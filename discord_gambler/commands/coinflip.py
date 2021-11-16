@@ -83,10 +83,14 @@ class CoinflipCommand(commands.Cog):
                 economy_cog.withdraw(ctx.author, coinflip_match.get_coins())
                 coinflip_cog.join_coinflip(member, ctx.author)
                 coinflip_cog.run_coinflip(coinflip_match.get_creator())
+
+                #Give the winner the coins minus the giveaway tax
                 economy_cog.deposit(
                     coinflip_match.get_winner(), int(coinflip_match.get_coins() * 1.7)
                 )
-                economy_cog._jackpot += int(coinflip_match.get_coins() * 0.3)
+
+                #Tax the house takes to populate the giveaway
+                coinflip_cog._giveaway += int(coinflip_match.get_coins() * 0.3)
                 await self.reset_messages()
             else:
                 await ctx.send(
@@ -135,14 +139,20 @@ class CoinflipCommand(commands.Cog):
 
             await self.reset_messages()
 
+    
+    @commands.command(name="reset")
+    async def on_reset_command(self, ctx):
+        if ctx.channel.name == os.environ.get("coinflip_channel_name"):
+            await self.reset_messages()
+
     async def reset_messages(self):
         coinflip_cog = self.bot.get_cog("Coinflip")
-        asyncio.create_task(
+        await asyncio.create_task(
             self._coinflip_results_message.edit(
                 embed=coinflip_cog.get_coinflip_results_message()
             )
         )
-        asyncio.create_task(
+        await asyncio.create_task(
             self._coinflip_open_message.edit(
                 embed=coinflip_cog.get_open_coinflips_message()
             )
