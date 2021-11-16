@@ -16,13 +16,14 @@ class CoinflipCommand(commands.Cog):
 
     @commands.command(name="setup")
     async def on_setup_coinflip_command(self, ctx):
-        coinflip_cog = self.bot.get_cog("Coinflip")
-        self._coinflip_results_message = await ctx.send(
-            embed=coinflip_cog.get_coinflip_results_message()
-        )
-        self._coinflip_open_message = await ctx.send(
-            embed=coinflip_cog.get_open_coinflips_message()
-        )
+        if ctx.channel.name == _coinflip_channel and ctx.guild.id == _guild_id:
+            coinflip_cog = self.bot.get_cog("Coinflip")
+            self._coinflip_results_message = await ctx.send(
+                embed=coinflip_cog.get_coinflip_results_message()
+            )
+            self._coinflip_open_message = await ctx.send(
+                embed=coinflip_cog.get_open_coinflips_message()
+            )
 
     @commands.command(name="create", aliases=["c"])
     async def on_create_coinflip_command(self, ctx, coins):

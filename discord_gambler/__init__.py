@@ -4,22 +4,25 @@ from discord.ext import commands
 from decouple import config
 import os
 
+logging.basicConfig(level=logging.INFO)
+
 # setup Discord
 try:
     _token = config("discord_token")
     _coinflip_channel = config("coinflip_channel_name")
     _guild_id = int(config("guild_id"))
+    logging.info(f"Local Config File found")
 except:
     _token = os.environ.get("discord_token")
     _coinflip_channel = os.environ.get("coinflip_channel_name")
     _guild_id = os.environ.get("guild_id")
+    logging.info(f"OS Env Config found")
+
 
 from discord_gambler.listeners import *
 from discord_gambler.cogs import *
 from discord_gambler.commands import *
 from discord_gambler.tasks import *
-
-logging.basicConfig(level=logging.INFO)
 
 
 intents = discord.Intents.default()
