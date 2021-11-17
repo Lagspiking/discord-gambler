@@ -61,7 +61,7 @@ class CoinflipCog(commands.Cog, name="Coinflip"):
         self._giveaway = 0
         self._giveaway_eligable = []
         self._giveaway_members = {}
-        return self._bot, percentages[winner]
+        return winner, percentages[winner]
 
     def get_coinflip_game(self, creator: discord.Member):
         game = None
