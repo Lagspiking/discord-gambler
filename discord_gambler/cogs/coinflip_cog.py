@@ -47,11 +47,10 @@ class CoinflipCog(commands.Cog, name="Coinflip"):
 
     def run_giveaway(self):
         '''Returns back a tuple containing the user object and win percentage'''
+        print(self._giveaway_members)
         percentages = {}
         for member in self._giveaway_members:
-            percentages[member.id] = int((
-                (self._giveaway_members[member] * self._giveaway_tax) / self._giveaway
-            ))
+            percentages[member.id] = int(((self._giveaway_members[member] * self._giveaway_tax) / self._giveaway) * 100)
         print(percentages)
 
         picks = [v for v, d in zip(percentages.keys(), percentages.values()) for x in range(d)]
