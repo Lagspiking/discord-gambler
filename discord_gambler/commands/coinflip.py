@@ -67,7 +67,6 @@ class CoinflipCommand(commands.Cog):
                     ), delete_after=5,
                 )
             elif wallet >= coins:
-                self.economy_cog.withdraw(ctx.author, coins)
                 self.coinflip_cog.create_coinflip(ctx.author, coins)
                 await self.reset_messages()
 
@@ -102,7 +101,7 @@ class CoinflipCommand(commands.Cog):
                     rand = randrange(25)
                     message = f"{ctx.author.mention}, you do not have enough coins to join this coinflip."
                     if rand == 0:
-                        message += " Lmfao imagine being poor."
+                        message += " Lmfao, imagine being poor."
                     await ctx.send(
                         embed=discord.Embed(
                             title="Error",
@@ -112,17 +111,8 @@ class CoinflipCommand(commands.Cog):
                     )
                     return
 
-                self.economy_cog.withdraw(ctx.author, coinflip_match.get_coins())
                 self.coinflip_cog.join_coinflip(member, ctx.author)
                 self.coinflip_cog.run_coinflip(coinflip_match.get_creator())
-
-                # Give the winner the coins minus the giveaway tax
-                self.economy_cog.deposit(
-                    coinflip_match.get_winner(), int(coinflip_match.get_coins() * 1.7)
-                )
-
-                # Tax the house takes to populate the giveaway
-                self.coinflip_cog._giveaway += int(coinflip_match.get_coins() * 0.3)
                 await self.reset_messages()
             else:
                 await ctx.send(
@@ -149,7 +139,6 @@ class CoinflipCommand(commands.Cog):
                 return
 
             self.coinflip_cog.remove_coinflip(ctx.author)
-            self.economy_cog.deposit(ctx.author, coinflip_match.get_coins())
             await self.reset_messages()
 
     @commands.command(name="wl", aliases=["winloss"])

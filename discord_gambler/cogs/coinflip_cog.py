@@ -1,7 +1,7 @@
 import discord
-import datetime
 from discord.ext import commands
 from discord_gambler.games.coinflip_game import CoinflipGame
+import random
 
 
 class CoinflipCog(commands.Cog, name="Coinflip"):
@@ -11,23 +11,56 @@ class CoinflipCog(commands.Cog, name="Coinflip"):
         self._coinflips = []
         self._giveaway = 0
         self._giveaway_eligable = []
+        self._giveaway_members = {}
 
     def create_coinflip(self, member: discord.Member, coins: int):
+        self.economy_cog.withdraw(member, coins)
         self._coinflips.append(CoinflipGame(member, coins))
 
     def join_coinflip(self, creator: discord.Member, joiner: discord.Member):
         game = self.get_coinflip_game(creator)
+        self.economy_cog.withdraw(joiner, game.get_coins())
         game.join(joiner)
 
     def run_coinflip(self, creator: discord.Member):
         game = self.get_coinflip_game(creator)
         game.flip()
+        
+        if game.get_winner() not in self._giveaway_members:
+            self._giveaway_members[game.get_winner()] = game.get_coins()
+        else:
+            self._giveaway_members[game.get_winner()] += game.get_coins()
 
-        if game.get_winner() not in self._giveaway_eligable:
-            self._giveaway_eligable.append(game.get_winner())
+        if game.get_loser() not in self._giveaway_members:
+            self._giveaway_members[game.get_loser()] = game.get_coins()
+        else:
+            self._giveaway_members[game.get_loser()] += game.get_coins()
 
-        if game.get_loser() not in self._giveaway_eligable:
-            self._giveaway_eligable.append(game.get_loser())
+        # Give the winner the coins minus the giveaway tax
+        self.economy_cog.deposit(
+            game.get_winner(), int(game.get_coins() * 1.8)
+        )
+
+        # Tax the house takes to populate the giveaway
+        self.coinflip_cog._giveaway += int(game.get_coins() * 0.2)
+
+    def run_giveaway(self):
+        '''Returns back a tuple containing the user object and win percentage'''
+        percentages = {}
+        for member in self._giveaway_members:
+            percentages[member] = (
+                self._giveaway_members[member] / self._giveaway
+            ) * 100
+
+        picks = [v for v, d in zip(percentages.keys(), percentages.values()) for x in range(d)]
+        winner = random.choice(picks)
+
+        self._economy.deposit(winner, self._coinflip_cog._giveaway)
+
+        self._coinflip_cog._giveaway = 0
+        self._coinflip_cog._giveaway_eligable = []
+        self._coinflip_cog._giveaway_members = {}
+        return winner, percentages[winner]
 
     def get_coinflip_game(self, creator: discord.Member):
         game = None
@@ -50,6 +83,7 @@ class CoinflipCog(commands.Cog, name="Coinflip"):
 
     def remove_coinflip(self, member: discord.Member):
         game = self.get_coinflip_game(member)
+        self.economy_cog.deposit(member, game.get_coins())
         self._coinflips.remove(game)
 
     def get_coinflips(self):
