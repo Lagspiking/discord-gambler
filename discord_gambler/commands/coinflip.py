@@ -34,9 +34,9 @@ class CoinflipCommand(commands.Cog):
                 await ctx.send(
                     embed=discord.Embed(
                         title="Error",
-                        description="You are already have a coinflip in progress.",
+                        description=f"{ctx.author.mention}, you already have a coinflip in progress.",
                         color=discord.Color.red(),
-                    )
+                    ), delete_after=5,
                 )
                 return
 

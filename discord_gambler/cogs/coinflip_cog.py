@@ -61,7 +61,7 @@ class CoinflipCog(commands.Cog, name="Coinflip"):
 
     def get_open_coinflips_message(self):
         embed = discord.Embed(
-            title=f"__Joinable Coinflips__", color=discord.Color.red()
+            title=f"__Joinable Coinflips__", color=discord.Color.blue()
         )
         embed.set_author(name=f"Lagspike™ | Giveaway: {self._giveaway}")
         embed.set_footer(text=f"Made by Nrwls & Sparks")
@@ -97,7 +97,7 @@ class CoinflipCog(commands.Cog, name="Coinflip"):
 
     def get_coinflip_results_message(self):
         embed = discord.Embed(
-            title=f"__Previous Coinflips__", color=discord.Color.red()
+            title=f"__Previous Coinflips__", color=discord.Color.blue()
         )
         embed.set_author(name=f"Lagspike™")
 
