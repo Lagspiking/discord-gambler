@@ -11,31 +11,42 @@ import os
 class CoinflipCommand(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.economy_cog = self.bot.get_cog("Economy")
+        self.coinflip_cog = self.bot.get_cog("Coinflip")
         self._coinflip_open_message = None
         self._coinflip_results_message = None
 
     @commands.command(name="setup")
     async def on_setup_coinflip_command(self, ctx):
         if ctx.channel.name == _coinflip_channel and ctx.guild.id == _guild_id:
-            coinflip_cog = self.bot.get_cog("Coinflip")
             self._coinflip_results_message = await ctx.send(
-                embed=coinflip_cog.get_coinflip_results_message()
+                embed=self.coinflip_cog.get_coinflip_results_message()
             )
             self._coinflip_open_message = await ctx.send(
-                embed=coinflip_cog.get_open_coinflips_message()
+                embed=self.coinflip_cog.get_open_coinflips_message()
             )
 
     @commands.command(name="create", aliases=["c"])
     async def on_create_coinflip_command(self, ctx, coins):
         if ctx.channel.name == _coinflip_channel and ctx.guild.id == _guild_id:
+
+            if self.coinflip_cog.get_coinflip_game(ctx.author):
+                await ctx.send(
+                    embed=discord.Embed(
+                        title="Error",
+                        description="You are already have a coinflip in progress.",
+                        color=discord.Color.red(),
+                    )
+                )
+                return
+
             thousands = coins.count("k")
             coins = int("".join([x for x in coins if x.isdigit()]))
             for x in range(0, thousands):
                 coins = int(coins * 1000)
-            economy_cog = self.bot.get_cog("Economy")
-            coinflip_cog = self.bot.get_cog("Coinflip")
+
             # Get the users wallet/coins
-            wallet = economy_cog.get_wallet(ctx.author)
+            wallet = self.economy_cog.get_wallet(ctx.author)
 
             if coins <= 0:
                 await ctx.send(
@@ -48,18 +59,15 @@ class CoinflipCommand(commands.Cog):
                     delete_after=5,
                 )
             elif wallet >= coins:
-                economy_cog.withdraw(ctx.author, coins)
-                coinflip_cog.create_coinflip(ctx.author, coins)
+                self.economy_cog.withdraw(ctx.author, coins)
+                self.coinflip_cog.create_coinflip(ctx.author, coins)
                 await self.reset_messages()
 
     @commands.command(name="join", aliases=["j"])
     async def on_join_coinflip_command(self, ctx, member: discord.Member):
         if ctx.channel.name == _coinflip_channel and ctx.guild.id == _guild_id:
             if member.name != ctx.author.name:
-                economy_cog = self.bot.get_cog("Economy")
-                coinflip_cog = self.bot.get_cog("Coinflip")
-
-                coinflip_match = coinflip_cog.get_coinflip_game(member)
+                coinflip_match = self.coinflip_cog.get_coinflip_game(member)
                 if coinflip_match is None:
                     await ctx.send(
                         f"> {ctx.author.mention}, a game by that user does not exist.",
@@ -74,7 +82,7 @@ class CoinflipCommand(commands.Cog):
                     )
                     return
 
-                wallet = economy_cog.get_wallet(ctx.author)
+                wallet = self.economy_cog.get_wallet(ctx.author)
                 if wallet < coinflip_match.get_coins():
                     await ctx.send(
                         f"> {ctx.author.mention}, you do not have enough coins to join this coinflip.",
@@ -82,17 +90,17 @@ class CoinflipCommand(commands.Cog):
                     )
                     return
 
-                economy_cog.withdraw(ctx.author, coinflip_match.get_coins())
-                coinflip_cog.join_coinflip(member, ctx.author)
-                coinflip_cog.run_coinflip(coinflip_match.get_creator())
+                self.economy_cog.withdraw(ctx.author, coinflip_match.get_coins())
+                self.coinflip_cog.join_coinflip(member, ctx.author)
+                self.coinflip_cog.run_coinflip(coinflip_match.get_creator())
 
                 # Give the winner the coins minus the giveaway tax
-                economy_cog.deposit(
+                self.economy_cog.deposit(
                     coinflip_match.get_winner(), int(coinflip_match.get_coins() * 1.7)
                 )
 
                 # Tax the house takes to populate the giveaway
-                coinflip_cog._giveaway += int(coinflip_match.get_coins() * 0.3)
+                self.coinflip_cog._giveaway += int(coinflip_match.get_coins() * 0.3)
                 await self.reset_messages()
             else:
                 await ctx.send(
@@ -103,10 +111,7 @@ class CoinflipCommand(commands.Cog):
     @commands.command(name="remove", aliases=["r"])
     async def on_remove_coinflip_command(self, ctx):
         if ctx.channel.name == _coinflip_channel and ctx.guild.id == _guild_id:
-            economy_cog = self.bot.get_cog("Economy")
-            coinflip_cog = self.bot.get_cog("Coinflip")
-
-            coinflip_match = coinflip_cog.get_coinflip_game(ctx.author)
+            coinflip_match = self.coinflip_cog.get_coinflip_game(ctx.author)
 
             if coinflip_match is None:
                 await ctx.send(
@@ -115,24 +120,22 @@ class CoinflipCommand(commands.Cog):
                 )
                 return
 
-            coinflip_cog.remove_coinflip(ctx.author)
-            economy_cog.deposit(ctx.author, coinflip_match.get_coins())
+            self.coinflip_cog.remove_coinflip(ctx.author)
+            self.economy_cog.deposit(ctx.author, coinflip_match.get_coins())
             await self.reset_messages()
 
     @commands.command(name="wl", aliases=["winloss"])
     async def on_win_loss_command(self, ctx):
         if ctx.channel.name == _coinflip_channel and ctx.guild.id == _guild_id:
-            coinflip_cog = self.bot.get_cog("Coinflip")
-
             wins = len(
                 [
                     x
-                    for x in coinflip_cog.get_coinflips()
+                    for x in self.coinflip_cog.get_coinflips()
                     if x.get_winner() == ctx.author
                 ]
             )
             loss = len(
-                [x for x in coinflip_cog.get_coinflips() if x.get_loser() == ctx.author]
+                [x for x in self.coinflip_cog.get_coinflips() if x.get_loser() == ctx.author]
             )
             await ctx.send(
                 f"> {ctx.author.mention}, your win/loss is: {wins}/{loss}.",
@@ -147,14 +150,13 @@ class CoinflipCommand(commands.Cog):
             await self.reset_messages()
 
     async def reset_messages(self):
-        coinflip_cog = self.bot.get_cog("Coinflip")
         await asyncio.create_task(
             self._coinflip_results_message.edit(
-                embed=coinflip_cog.get_coinflip_results_message()
+                embed=self.coinflip_cog.get_coinflip_results_message()
             )
         )
         await asyncio.create_task(
             self._coinflip_open_message.edit(
-                embed=coinflip_cog.get_open_coinflips_message()
+                embed=self.coinflip_cog.get_open_coinflips_message()
             )
         )

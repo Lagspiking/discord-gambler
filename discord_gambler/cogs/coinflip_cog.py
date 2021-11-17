@@ -106,7 +106,7 @@ class CoinflipCog(commands.Cog, name="Coinflip"):
             or len([x for x in self.get_coinflips() if not x.is_joinable()]) == 0
         ):
             embed.add_field(
-                name="_No previous coinflips to show_", value="\u200b", inline=True
+                name="_No previous coinflips_", value="\u200b", inline=True
             )
             return embed
 
