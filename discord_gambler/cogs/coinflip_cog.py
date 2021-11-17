@@ -50,7 +50,17 @@ class CoinflipCog(commands.Cog, name="Coinflip"):
         print(self._giveaway_members)
         percentages = {}
         for member in self._giveaway_members:
-            percentages[member.id] = int(((self._giveaway_members[member] * self._giveaway_tax) / self._giveaway) * 100)
+            #Assume 2 users coinflip 1,000,000 and the giveaway will only contain the taxed coins from that coinflip
+            #We tax 20% of the total coins, meaning we actually tax 10% from each user (100,000 from each user, 200,000 tax total)
+            # So the calculation is:
+            # (1,000,000 * 0.2) = 200,000 -> Tax Total
+            # (200,000 / 2) = 100,000     -> Tax from each person
+            # (100,000 / 200,000) = 0.5   -> Win percentage as decimal
+            # (0.5 * 100) = 50            -> Win percentage
+            taxTotal = int(self._giveaway_members[member] * self._giveaway_tax)
+            taxPerPerson = int(taxTotal / 2)
+            winPercentage = (taxPerPerson / self._giveaway) * 100
+            percentages[member.id] = int(winPercentage)
         print(percentages)
 
         picks = [v for v, d in zip(percentages.keys(), percentages.values()) for x in range(d)]
@@ -58,10 +68,12 @@ class CoinflipCog(commands.Cog, name="Coinflip"):
 
         self._economy_cog.deposit(winner, self._giveaway)
 
+        result = winner, percentages[winner.id], self._giveaway
+
         self._giveaway = 0
         self._giveaway_eligable = []
         self._giveaway_members = {}
-        return winner, percentages[winner.id]
+        return result
 
     def get_coinflip_game(self, creator: discord.Member):
         game = None
