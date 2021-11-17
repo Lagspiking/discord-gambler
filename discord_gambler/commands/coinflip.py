@@ -119,8 +119,8 @@ class CoinflipCommand(commands.Cog):
             economy_cog.deposit(ctx.author, coinflip_match.get_coins())
             await self.reset_messages()
 
-    @commands.command(name="wl", aliases=["winlose"])
-    async def on_win_lose_command(self, ctx):
+    @commands.command(name="wl", aliases=["winloss"])
+    async def on_win_loss_command(self, ctx):
         if ctx.channel.name == _coinflip_channel and ctx.guild.id == _guild_id:
             coinflip_cog = self.bot.get_cog("Coinflip")
 
@@ -131,11 +131,11 @@ class CoinflipCommand(commands.Cog):
                     if x.get_winner() == ctx.author
                 ]
             )
-            lose = len(
+            loss = len(
                 [x for x in coinflip_cog.get_coinflips() if x.get_loser() == ctx.author]
             )
             await ctx.send(
-                f"> {ctx.author.mention}, your win/lose is: {wins}/{lose}.",
+                f"> {ctx.author.mention}, your win/loss is: {wins}/{loss}.",
                 delete_after=5,
             )
 
