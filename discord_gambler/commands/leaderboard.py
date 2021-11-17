@@ -25,7 +25,7 @@ class LeaderboardCommand(commands.Cog):
             embed = discord.Embed(
                 title=f"Leaderboard",
                 timestamp=datetime.datetime.utcnow(),
-                color=discord.Color.red(),
+                color=discord.Color.blue(),
             )
             embed.set_author(name="Lagspike™")
             embed.set_footer(text=f"Made by Nrwls & Sparks")
