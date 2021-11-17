@@ -27,7 +27,7 @@ class CoinsTasks(commands.Cog):
     async def giveaway_jackpot(self):
         if self._coinflip_cog._giveaway >= 50000:
             winner, percentage = self._coinflip_cog.run_giveaway()
-            channel = discord.utils.get(self._bot.guild.channels, name=_coinflip_channel)
+            channel = discord.utils.get(self._bot.get_guild(_guild_id).channels, name=_coinflip_channel)
             await self._bot.get_channel(channel.id).send(
                 embed=discord.Embed(
                     title="Information",
