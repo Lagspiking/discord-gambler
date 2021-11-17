@@ -31,7 +31,7 @@ class CoinflipCommand(commands.Cog):
     async def on_create_coinflip_command(self, ctx, coins):
         if ctx.channel.name == _coinflip_channel and ctx.guild.id == _guild_id:
             #If user already has a coinflip open, don't allow another one
-            if self.coinflip_cog.get_coinflip_game(ctx.author):
+            if self.coinflip_cog.get_open_coinflip_game(ctx.author):
                 await ctx.send(
                     embed=discord.Embed(
                         title="Error",
@@ -125,7 +125,7 @@ class CoinflipCommand(commands.Cog):
     @commands.command(name="remove", aliases=["r"])
     async def on_remove_coinflip_command(self, ctx):
         if ctx.channel.name == _coinflip_channel and ctx.guild.id == _guild_id:
-            coinflip_match = self.coinflip_cog.get_coinflip_game(ctx.author)
+            coinflip_match = self.coinflip_cog.get_open_coinflip_game(ctx.author)
 
             if coinflip_match is None:
                 await ctx.send(

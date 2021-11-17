@@ -69,6 +69,13 @@ class CoinflipCog(commands.Cog, name="Coinflip"):
                 game = g
         return game
 
+    def get_open_coinflip_game(self, creator: discord.Member):
+        game = None
+        for g in self._coinflips:
+            if g.get_creator() == creator and g.is_joinable():
+                game = g
+        return game
+
     def get_giveaway(self):
         return self._giveaway
 
@@ -82,7 +89,7 @@ class CoinflipCog(commands.Cog, name="Coinflip"):
         self._giveaway_eligable = eligable
 
     def remove_coinflip(self, member: discord.Member):
-        game = self.get_coinflip_game(member)
+        game = self.get_open_coinflip_game(member)
         self._economy_cog.deposit(member, game.get_coins())
         self._coinflips.remove(game)
 
