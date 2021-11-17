@@ -29,7 +29,7 @@ class CoinsTasks(commands.Cog):
     async def giveaway_jackpot(self):
         if self._coinflip_cog._giveaway >= 50000:
             # This is pretty cool, didn't know it existed lmao
-            winner = random.choice(self._coinflip_cog._jackpot_eligable)
+            winner = random.choice(self._coinflip_cog._giveaway_eligable)
 
             self._economy.deposit(winner, self._coinflip_cog._giveaway)
             # When sending a chat message, prefix the sentence with > for cooler looking markup.
