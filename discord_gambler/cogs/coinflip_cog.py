@@ -89,7 +89,7 @@ class CoinflipCog(commands.Cog, name="Coinflip"):
 
         embed.add_field(
             name="**Commands**",
-            value="Type _!c [coins]_ to create a coinflip.\n Type _!j [@mention]_ to join a coinflip.\n Type _!coins_ to check your wallet.\n Type _!leader_ to see the leaderboards.\n Type _!give [@mention] [coins]_ to give someone coins.\n Type _!wl_ to see your win/loss.",
+            value="Type ***!coins*** to check your wallet.\n Type ***!c coins*** to create a coinflip.\n Type ***!j @mention*** to join a coinflip.\n Type ***!leader*** to see the leaderboards.\n Type ***!give @mention coins*** to give someone coins.\n Type ***!wl*** to see your win/loss.",
             inline=False,
         )
 
@@ -100,7 +100,6 @@ class CoinflipCog(commands.Cog, name="Coinflip"):
             title=f"__Previous Coinflips__", color=discord.Color.red()
         )
         embed.set_author(name=f"Lagspike™")
-        embed.set_footer(text=f"Made by Nrwls & Sparks")
 
         if (
             len(self.get_coinflips()) == 0
