@@ -172,11 +172,6 @@ class CoinflipCommand(commands.Cog):
                     color=discord.Color.green(),
                 ), delete_after=5,
             )
-            await ctx.send(
-                f"> {ctx.author.mention}, your win/loss is: {wins}/{loss}.",
-                delete_after=5,
-            )
-
             await self.reset_messages()
 
     @commands.command(name="reset")
