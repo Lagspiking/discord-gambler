@@ -51,8 +51,10 @@ class CoinflipCog(commands.Cog, name="Coinflip"):
             percentages[member] = int((
                 self._giveaway_members[member] / self._giveaway
             ) * 100)
+        print(percentages)
 
         picks = [v for v, d in zip(percentages.keys(), percentages.values()) for x in range(d)]
+        print(picks)
         winner = random.choice(picks)
 
         self._economy_cog.deposit(winner, self._giveaway)
