@@ -42,7 +42,7 @@ class CoinflipCog(commands.Cog, name="Coinflip"):
         )
 
         # Tax the house takes to populate the giveaway
-        self.coinflip_cog._giveaway += int(game.get_coins() * 0.2)
+        self._giveaway += int(game.get_coins() * 0.2)
 
     def run_giveaway(self):
         '''Returns back a tuple containing the user object and win percentage'''
@@ -55,11 +55,11 @@ class CoinflipCog(commands.Cog, name="Coinflip"):
         picks = [v for v, d in zip(percentages.keys(), percentages.values()) for x in range(d)]
         winner = random.choice(picks)
 
-        self._economy_cog.deposit(winner, self._coinflip_cog._giveaway)
+        self._economy_cog.deposit(winner, self._giveaway)
 
-        self._coinflip_cog._giveaway = 0
-        self._coinflip_cog._giveaway_eligable = []
-        self._coinflip_cog._giveaway_members = {}
+        self._giveaway = 0
+        self._giveaway_eligable = []
+        self._giveaway_members = {}
         return winner, percentages[winner]
 
     def get_coinflip_game(self, creator: discord.Member):
