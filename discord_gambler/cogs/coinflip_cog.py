@@ -70,7 +70,7 @@ class CoinflipCog(commands.Cog, name="Coinflip"):
             len(self.get_coinflips()) == 0
             or len([x for x in self.get_coinflips() if x.is_joinable()]) == 0
         ):
-            embed.add_field(name="**No active coinflips**", value="\u200b", inline=True)
+            embed.add_field(name="_No active coinflips_", value="\u200b", inline=True)
         else:
             creators = ""
             prices = ""
@@ -89,7 +89,7 @@ class CoinflipCog(commands.Cog, name="Coinflip"):
 
         embed.add_field(
             name="**Commands**",
-            value="Type ***!coins*** to check your wallet.\n Type ***!c coins*** to create a coinflip.\n Type ***!j @mention*** to join a coinflip.\n Type ***!leader*** to see the leaderboards.\n Type ***!give @mention coins*** to give someone coins.\n Type ***!wl*** to see your win/loss.",
+            value="\n Type _!coins_ to check your wallet.\n Type _!c [coins]_ to create a coinflip.\n Type _!j [@mention]_ to join a coinflip.\n Type _!leader_ to see the leaderboards.\n Type _!give [@mention] [coins]_ to give someone coins.\n Type _!wl_ to see your win/loss.",
             inline=False,
         )
 
@@ -106,7 +106,7 @@ class CoinflipCog(commands.Cog, name="Coinflip"):
             or len([x for x in self.get_coinflips() if not x.is_joinable()]) == 0
         ):
             embed.add_field(
-                name="**No previous coinflips to show**", value="\u200b", inline=True
+                name="_No previous coinflips to show_", value="\u200b", inline=True
             )
             return embed
 
