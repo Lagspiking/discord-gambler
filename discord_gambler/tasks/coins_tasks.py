@@ -5,8 +5,6 @@ from discord_gambler import _guild_id, _coinflip_channel
 from decouple import config
 from datetime import datetime
 
-
-
 class CoinsTasks(commands.Cog):
     def __init__(self, bot):
         self._bot = bot

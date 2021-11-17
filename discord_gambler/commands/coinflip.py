@@ -13,6 +13,7 @@ class CoinflipCommand(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.economy_cog = self.bot.get_cog("Economy")
+        self.coinflip_cog = self.bot.get_cog("Coinflip")
         self._coinflip_open_message = None
         self._coinflip_results_message = None
 
@@ -31,7 +32,7 @@ class CoinflipCommand(commands.Cog):
         if ctx.channel.name == _coinflip_channel and ctx.guild.id == _guild_id:
             coinflip_cog = self.bot.get_cog("Coinflip")
             #If user already has a coinflip open, don't allow another one
-            if self.coinflip_cog.get_coinflip_game(ctx.author):
+            if coinflip_cog.get_coinflip_game(ctx.author):
                 await ctx.send(
                     embed=discord.Embed(
                         title="Error",
