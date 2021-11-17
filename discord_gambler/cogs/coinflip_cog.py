@@ -7,19 +7,19 @@ import random
 class CoinflipCog(commands.Cog, name="Coinflip"):
     def __init__(self, bot):
         self._bot = bot
-        self._economy = self._bot.get_cog("Economy")
+        self._economy_cog = self._bot.get_cog("Economy")
         self._coinflips = []
         self._giveaway = 0
         self._giveaway_eligable = []
         self._giveaway_members = {}
 
     def create_coinflip(self, member: discord.Member, coins: int):
-        self.economy_cog.withdraw(member, coins)
+        self._economy_cog.withdraw(member, coins)
         self._coinflips.append(CoinflipGame(member, coins))
 
     def join_coinflip(self, creator: discord.Member, joiner: discord.Member):
         game = self.get_coinflip_game(creator)
-        self.economy_cog.withdraw(joiner, game.get_coins())
+        self._economy_cog.withdraw(joiner, game.get_coins())
         game.join(joiner)
 
     def run_coinflip(self, creator: discord.Member):
@@ -37,7 +37,7 @@ class CoinflipCog(commands.Cog, name="Coinflip"):
             self._giveaway_members[game.get_loser()] += game.get_coins()
 
         # Give the winner the coins minus the giveaway tax
-        self.economy_cog.deposit(
+        self._economy_cog.deposit(
             game.get_winner(), int(game.get_coins() * 1.8)
         )
 
@@ -55,7 +55,7 @@ class CoinflipCog(commands.Cog, name="Coinflip"):
         picks = [v for v, d in zip(percentages.keys(), percentages.values()) for x in range(d)]
         winner = random.choice(picks)
 
-        self._economy.deposit(winner, self._coinflip_cog._giveaway)
+        self._economy_cog.deposit(winner, self._coinflip_cog._giveaway)
 
         self._coinflip_cog._giveaway = 0
         self._coinflip_cog._giveaway_eligable = []
@@ -83,7 +83,7 @@ class CoinflipCog(commands.Cog, name="Coinflip"):
 
     def remove_coinflip(self, member: discord.Member):
         game = self.get_coinflip_game(member)
-        self.economy_cog.deposit(member, game.get_coins())
+        self._economy_cog.deposit(member, game.get_coins())
         self._coinflips.remove(game)
 
     def get_coinflips(self):
