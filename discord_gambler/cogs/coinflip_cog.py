@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 from discord_gambler.games.coinflip_game import CoinflipGame
 import random
-
+from discord_gambler import _guild_id
 
 class CoinflipCog(commands.Cog, name="Coinflip"):
     def __init__(self, bot):
@@ -48,21 +48,20 @@ class CoinflipCog(commands.Cog, name="Coinflip"):
         '''Returns back a tuple containing the user object and win percentage'''
         percentages = {}
         for member in self._giveaway_members:
-            percentages[member] = int((
+            percentages[member.id] = int((
                 self._giveaway_members[member] / self._giveaway
-            ) * 100)
+            ))
         print(percentages)
 
         picks = [v for v, d in zip(percentages.keys(), percentages.values()) for x in range(d)]
-        print(picks)
-        winner = random.choice(picks)
+        winner = self._bot.get_guild(_guild_id).get_member(random.choice(picks))
 
         self._economy_cog.deposit(winner, self._giveaway)
 
         self._giveaway = 0
         self._giveaway_eligable = []
         self._giveaway_members = {}
-        return winner, percentages[winner]
+        return self._bot, percentages[winner]
 
     def get_coinflip_game(self, creator: discord.Member):
         game = None
