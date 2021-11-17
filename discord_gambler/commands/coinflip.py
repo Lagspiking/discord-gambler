@@ -30,9 +30,8 @@ class CoinflipCommand(commands.Cog):
     @commands.command(name="create", aliases=["c"])
     async def on_create_coinflip_command(self, ctx, coins):
         if ctx.channel.name == _coinflip_channel and ctx.guild.id == _guild_id:
-            coinflip_cog = self.bot.get_cog("Coinflip")
             #If user already has a coinflip open, don't allow another one
-            if coinflip_cog.get_coinflip_game(ctx.author):
+            if self.coinflip_cog.get_coinflip_game(ctx.author):
                 await ctx.send(
                     embed=discord.Embed(
                         title="Error",
@@ -67,7 +66,7 @@ class CoinflipCommand(commands.Cog):
                     ), delete_after=5,
                 )
             elif wallet >= coins:
-                coinflip_cog.create_coinflip(ctx.author, coins)
+                self.coinflip_cog.create_coinflip(ctx.author, coins)
                 await self.reset_messages()
 
     @commands.command(name="join", aliases=["j"])
