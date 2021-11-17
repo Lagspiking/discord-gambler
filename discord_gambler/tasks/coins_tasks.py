@@ -4,6 +4,7 @@ from discord.ext import commands, tasks
 from discord_gambler import _guild_id, _coinflip_channel
 from decouple import config
 from datetime import datetime
+import asyncio
 
 class CoinsTasks(commands.Cog):
     def __init__(self, bot):
@@ -34,6 +35,16 @@ class CoinsTasks(commands.Cog):
                     description=f"{winner.mention} has won the jackpot of {giveaway_total} with a {percentage} percent chance.",
                     color=discord.Color.green(),
                 ), delete_after=30,
+            )
+            await asyncio.create_task(
+                self._coinflip_results_message.edit(
+                    embed=self.coinflip_cog.get_coinflip_results_message()
+                )
+            )
+            await asyncio.create_task(
+                self._coinflip_open_message.edit(
+                    embed=self.coinflip_cog.get_open_coinflips_message()
+                )
             )
 
     @coins_reward_task.before_loop
