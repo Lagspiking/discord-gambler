@@ -1,13 +1,23 @@
 import psycopg2 as db
 from decouple import config
 import logging
+from decouple import config, UndefinedValueError
+import os
 
 logging.basicConfig(level=logging.INFO)
+
+# fetch db uri
+try:
+    postgres_uri = config("DATABASE_URL")
+    logging.info(f"Local Config File found")
+except UndefinedValueError:
+    postgres_uri = os.environ.get("DATABASE_URL")
+    logging.info(f"OS Env Config found")
 
 
 class PostgresDAO:
     def __init__(self):
-        self.conn = db.connect(config("postgres"))
+        self.conn = db.connect(postgres_uri)
         self.cur = self.conn.cursor()
 
     def close(self):

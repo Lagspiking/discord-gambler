@@ -1,6 +1,7 @@
 from discord.ext import commands
 from discord_gambler import _coinflip_channel, _guild_id
 import json
+from ..dao.user_wallets import UserWalletsDAO
 
 
 class SaveCommand(commands.Cog):
@@ -10,11 +11,16 @@ class SaveCommand(commands.Cog):
         self._coinflip_cog = self._bot.get_cog("Coinflip")
         self._save_state = {}
         self.load_data(self)
+        self._user_wallets = UserWalletsDAO()
 
     @staticmethod
     def save_data(self):
         self._save_state["wallets"] = self._economy_cog.get_all_wallets()
         self._save_state["current_jackpot"] = self._coinflip_cog.get_giveaway()
+        # print(self._user_wallets.get_wallet(169488809602318336))
+        # self._user_wallets.update_wallet(169488809602318336, 5000)
+        # print(self._user_wallets.get_wallet(169488809602318336))
+        # self._user_wallets.close()
 
         # TODO: Handle saving and loading within a cog
         with open("save.json", "w") as outfile:
