@@ -10,7 +10,7 @@ class CoinflipGame():
         self._loser = None
 
     def flip(self):
-        coinflip = random.randint(0, 1)
+        coinflip = random.choice([0, 1])
 
         if coinflip == 0:
             self._winner = self._creator
