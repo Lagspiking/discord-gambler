@@ -110,16 +110,12 @@ class CoinflipCommand(commands.Cog):
                     CoinflipsDAO().finish_coinflip(
                         member.id, ctx.author.id, ctx.author.id, member.id
                     )
-                    UserWalletsDAO().update_wallet(
-                        ctx.author.id, total_stake * self._giveaway_tax
-                    )
+                    UserWalletsDAO().update_wallet(ctx.author.id, total_stake)
                 else:
                     CoinflipsDAO().finish_coinflip(
                         member.id, ctx.author.id, member.id, ctx.author.id
                     )
-                    UserWalletsDAO().update_wallet(
-                        member.id, total_stake * self._giveaway_tax
-                    )
+                    UserWalletsDAO().update_wallet(member.id, total_stake)
 
                 await self.reset_messages()
 
