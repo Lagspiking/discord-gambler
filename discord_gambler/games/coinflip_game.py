@@ -1,7 +1,8 @@
 import random
 import discord
 
-class CoinflipGame():
+
+class CoinflipGame:
     def __init__(self, creator: discord.Member, coins: int):
         self._creator = creator
         self._joiner = None
@@ -9,15 +10,13 @@ class CoinflipGame():
         self._winner = None
         self._loser = None
 
-    def flip(self):
+    def flip(self, user_id: int, user2_id: int):
         coinflip = random.choice([0, 1])
 
         if coinflip == 0:
-            self._winner = self._creator
-            self._loser = self._joiner
+            return user_id
         else:
-            self._winner = self._joiner
-            self._loser = self._creator
+            return user2_id
 
     def join(self, member):
         self._joiner = member
@@ -33,7 +32,7 @@ class CoinflipGame():
 
     def get_winner(self):
         return self._winner
-    
+
     def get_loser(self):
         return self._loser
 

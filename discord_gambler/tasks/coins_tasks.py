@@ -2,9 +2,11 @@ import discord
 import discord.utils
 from discord.ext import commands, tasks
 from discord_gambler import _guild_id, _coinflip_channel
+from ..dao.user_wallets import UserWalletsDAO
 from decouple import config
 from datetime import datetime
 import asyncio
+
 
 class CoinsTasks(commands.Cog):
     def __init__(self, bot):
@@ -12,40 +14,42 @@ class CoinsTasks(commands.Cog):
         self._economy = self._bot.get_cog("Economy")
         self._coinflip_cog = self._bot.get_cog("Coinflip")
         self.coins_reward_task.start()
-        self.giveaway_jackpot.start()
+        # self.giveaway_jackpot.start()
 
     def cog_unload(self):
         self.coins_reward_task.cancel()
-        self.giveaway_jackpot.cancel()
-
-    @tasks.loop(seconds=10)
-    async def coins_reward_task(self):
-        if self.get_users_in_voice_channels():
-            for member in self.get_users_in_voice_channels():
-                self._economy.deposit(member, 50)
+        # self.giveaway_jackpot.cancel()
 
     @tasks.loop(seconds=30)
-    async def giveaway_jackpot(self):
-        if self._coinflip_cog._giveaway >= 50000:
-            winner, percentage, giveaway_total = self._coinflip_cog.run_giveaway()
-            channel = discord.utils.get(self._bot.get_guild(_guild_id).channels, name=_coinflip_channel)
-            await self._bot.get_channel(channel.id).send(
-                embed=discord.Embed(
-                    title="Information",
-                    description=f"{winner.mention} has won the jackpot of {giveaway_total} with a {percentage} percent chance.",
-                    color=discord.Color.green(),
-                ), delete_after=30,
-            )
-            await asyncio.create_task(
-                self._coinflip_results_message.edit(
-                    embed=self.coinflip_cog.get_coinflip_results_message()
-                )
-            )
-            await asyncio.create_task(
-                self._coinflip_open_message.edit(
-                    embed=self.coinflip_cog.get_open_coinflips_message()
-                )
-            )
+    async def coins_reward_task(self):
+        if self.get_users_in_voice_channels():
+            UserWalletsDAO().update_wallets(self.get_users_in_voice_channels(), 50)
+
+    # @tasks.loop(seconds=30)
+    # async def giveaway_jackpot(self):
+    #     if self._coinflip_cog._giveaway >= 50000:
+    #         winner, percentage, giveaway_total = self._coinflip_cog.run_giveaway()
+    #         channel = discord.utils.get(
+    #             self._bot.get_guild(_guild_id).channels, name=_coinflip_channel
+    #         )
+    #         await self._bot.get_channel(channel.id).send(
+    #             embed=discord.Embed(
+    #                 title="Information",
+    #                 description=f"{winner.mention} has won the jackpot of {giveaway_total} with a {percentage} percent chance.",
+    #                 color=discord.Color.green(),
+    #             ),
+    #             delete_after=30,
+    #         )
+    #         await asyncio.create_task(
+    #             self._coinflip_results_message.edit(
+    #                 embed=self.coinflip_cog.get_coinflip_results_message()
+    #             )
+    #         )
+    #         await asyncio.create_task(
+    #             self._coinflip_open_message.edit(
+    #                 embed=self.coinflip_cog.get_open_coinflips_message()
+    #             )
+    #         )
 
     @coins_reward_task.before_loop
     async def before_coins_reward_task(self):

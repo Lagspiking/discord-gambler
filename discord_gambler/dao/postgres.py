@@ -9,10 +9,10 @@ logging.basicConfig(level=logging.INFO)
 # fetch db uri
 try:
     postgres_uri = config("DATABASE_URL")
-    logging.info(f"Local Config File found")
+    logging.info(f"Local DB File found")
 except UndefinedValueError:
     postgres_uri = os.environ.get("DATABASE_URL")
-    logging.info(f"OS Env Config found")
+    logging.info(f"OS Env DB found")
 
 
 class PostgresDAO:
