@@ -28,7 +28,7 @@ class CoinflipCommand(commands.Cog):
             )
 
     @commands.command(name="create", aliases=["c"])
-    async def on_create_coinflip_command(self, ctx, coins: int):
+    async def on_create_coinflip_command(self, ctx, coins):
         if ctx.channel.name == _coinflip_channel and ctx.guild.id == _guild_id:
             # If user already has a coinflip open, don't allow another one
             if CoinflipsDAO().get_open_coinflip(ctx.author.id):
@@ -41,6 +41,11 @@ class CoinflipCommand(commands.Cog):
                     delete_after=5,
                 )
                 return
+
+            thousands = coins.count("k")
+            coins = int("".join([x for x in coins if x.isdigit()]))
+            for x in range(0, thousands):
+                coins = int(coins * 1000)
 
             # Get the users wallet/coins
             wallet = UserWalletsDAO().get_wallet(ctx.author.id)
