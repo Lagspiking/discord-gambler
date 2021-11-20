@@ -40,7 +40,7 @@ class UserWalletsDAO(PostgresDAO):
         wallet = self.get_wallet(user_id)
         if wallet == 0:
             self.cur.execute(
-                "UPDATE users SET wallet %s WHERE user_id = %s",
+                "UPDATE users SET wallet = %s WHERE user_id = %s",
                 (balance, user_id),
             )
         elif wallet:
