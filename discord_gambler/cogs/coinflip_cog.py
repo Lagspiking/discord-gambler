@@ -158,7 +158,7 @@ class CoinflipCog(commands.Cog, name="Coinflip"):
         prices = ""
         losers = ""
 
-        for coinflip in CoinflipsDAO().get_recent_coinflips()[::-1]:
+        for coinflip in CoinflipsDAO().get_recent_coinflips():
             user = guild.get_member(coinflip[0])
             if user != None:
                 winners += f"{guild.get_member(int(coinflip[0])).mention}\n"
