@@ -55,9 +55,9 @@ class CoinsTasks(commands.Cog):
     async def before_coins_reward_task(self):
         await self._bot.wait_until_ready()
 
-    @giveaway_jackpot.before_loop
-    async def before_giveaway_jackpot(self):
-        await self._bot.wait_until_ready()
+    # @giveaway_jackpot.before_loop
+    # async def before_giveaway_jackpot(self):
+    #     await self._bot.wait_until_ready()
 
     def get_users_in_voice_channels(self):
         active_members = []
