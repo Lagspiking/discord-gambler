@@ -42,6 +42,7 @@ class CoinflipCommand(commands.Cog):
                 )
                 return
 
+            # Converts k to 1000
             thousands = coins.count("k")
             coins = int("".join([x for x in coins if x.isdigit()]))
             for x in range(0, thousands):

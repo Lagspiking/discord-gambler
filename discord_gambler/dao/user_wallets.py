@@ -37,7 +37,13 @@ class UserWalletsDAO(PostgresDAO):
         return self.cur.fetchall()
 
     def update_wallet(self, user_id: int, balance: int):
-        if self.get_wallet(user_id):
+        wallet = self.get_wallet(user_id)
+        if wallet == 0:
+            self.cur.execute(
+                "UPDATE users SET wallet %s WHERE user_id = %s",
+                (balance, user_id),
+            )
+        elif wallet:
             self.cur.execute(
                 "UPDATE users SET wallet = wallet + %s WHERE user_id = %s",
                 (balance, user_id),
