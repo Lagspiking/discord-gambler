@@ -117,7 +117,7 @@ class CoinflipCog(commands.Cog, name="Coinflip"):
         results = [x for x in self.get_coinflips() if not x.is_joinable()]
         return results[-10:]
 
-    def get_open_coinflips_message(self):
+    def get_open_coinflips_message(self, _guild_id: int):
         embed = discord.Embed(
             title=f"__Joinable Coinflips__", color=discord.Color.blue()
         )
@@ -127,26 +127,31 @@ class CoinflipCog(commands.Cog, name="Coinflip"):
         guild = discord.utils.get(self._bot.guilds, id=_guild_id)
         creators = ""
         prices = ""
-        for coinflip in CoinflipsDAO().get_open_coinflips().items():
-            user = guild.get_member(coinflip[0])
-            if user != None:
-                creators += f"{guild.get_member(int(coinflip[0])).mention}\n"
-                prices += f"{coinflip[1]} coins\n"
 
-        if creators != "":
-            embed.add_field(name="**User**", value=creators, inline=True)
-            embed.add_field(name="**Stake**", value=prices, inline=True)
+        open_coinflips = CoinflipsDAO().get_open_coinflips(_guild_id)
 
-            embed.add_field(
-                name="**Commands**",
-                value="\n Type _!coins_ to check your wallet.\n Type _!c [coins]_ to create a coinflip.\n Type _!j [@mention]_ to join a coinflip.\n Type _!leader_ to see the leaderboards.\n Type _!give [@mention] [coins]_ to give someone coins.\n Type _!wl_ to see your win/loss.",
-                inline=False,
-            )
+        if open_coinflips:
+            print(open_coinflips)
+            for coinflip in open_coinflips:
+                user = guild.get_member(coinflip[0])
+                if user != None:
+                    creators += f"{guild.get_member(int(coinflip[0])).mention}\n"
+                    prices += f"{coinflip[1]} coins\n"
+
+            if creators != "":
+                embed.add_field(name="**User**", value=creators, inline=True)
+                embed.add_field(name="**Stake**", value=prices, inline=True)
+
+                embed.add_field(
+                    name="**Commands**",
+                    value="\n Type _!coins_ to check your wallet.\n Type _!c [coins]_ to create a coinflip.\n Type _!j [@mention]_ to join a coinflip.\n Type _!leader_ to see the leaderboards.\n Type _!give [@mention] [coins]_ to give someone coins.\n Type _!wl_ to see your win/loss.",
+                    inline=False,
+                )
         else:
             embed.add_field(name="_No active coinflips_", value="\u200b", inline=True)
         return embed
 
-    def get_coinflip_results_message(self):
+    def get_coinflip_results_message(self, _guild_id: int):
         embed = discord.Embed(
             title=f"__Previous Coinflips__", color=discord.Color.blue()
         )
@@ -158,17 +163,20 @@ class CoinflipCog(commands.Cog, name="Coinflip"):
         prices = ""
         losers = ""
 
-        for coinflip in CoinflipsDAO().get_recent_coinflips():
-            user = guild.get_member(coinflip[0])
-            if user != None:
-                winners += f"{guild.get_member(int(coinflip[0])).mention}\n"
-                prices += f"{coinflip[1]} coins\n"
-                losers += f"{guild.get_member(int(coinflip[2])).mention}\n"
+        recent_coinflips = CoinflipsDAO().get_recent_coinflips(_guild_id)
 
-        if winners != "":
-            embed.add_field(name="**__Winner__**", value=winners, inline=True)
-            embed.add_field(name="**Stake**", value=prices, inline=True)
-            embed.add_field(name="**__Loser__**", value=losers, inline=True)
+        if recent_coinflips:
+            for coinflip in recent_coinflips:
+                user = guild.get_member(coinflip[0])
+                if user != None:
+                    winners += f"{guild.get_member(int(coinflip[0])).mention}\n"
+                    prices += f"{coinflip[1]} coins\n"
+                    losers += f"{guild.get_member(int(coinflip[2])).mention}\n"
+
+            if winners != "":
+                embed.add_field(name="**__Winner__**", value=winners, inline=True)
+                embed.add_field(name="**Stake**", value=prices, inline=True)
+                embed.add_field(name="**__Loser__**", value=losers, inline=True)
         else:
             embed.add_field(name="_No previous coinflips_", value="\u200b", inline=True)
             return embed
