@@ -89,7 +89,7 @@ class CoinflipCommand(commands.Cog):
                     )
                     return
 
-                wallet = UserWalletsDAO().get_wallet(ctx.author.id)
+                wallet = UserWalletsDAO().get_wallet(_guild_id, ctx.author.id)
                 coinflip_value = CoinflipsDAO().get_open_coinflip(_guild_id, member.id)[
                     1
                 ]
