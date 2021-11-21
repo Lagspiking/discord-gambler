@@ -23,7 +23,9 @@ class CoinsTasks(commands.Cog):
     @tasks.loop(seconds=30)
     async def coins_reward_task(self):
         if self.get_users_in_voice_channels():
-            UserWalletsDAO().update_wallets(self.get_users_in_voice_channels(), 50)
+            UserWalletsDAO().update_wallets(
+                _guild_id, self.get_users_in_voice_channels(), 50
+            )
 
     # @tasks.loop(seconds=30)
     # async def giveaway_jackpot(self):
