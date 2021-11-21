@@ -141,14 +141,14 @@ class CoinflipCog(commands.Cog, name="Coinflip"):
             if creators != "":
                 embed.add_field(name="**User**", value=creators, inline=True)
                 embed.add_field(name="**Stake**", value=prices, inline=True)
-
-                embed.add_field(
-                    name="**Commands**",
-                    value="\n Type _!coins_ to check your wallet.\n Type _!c [coins]_ to create a coinflip.\n Type _!j [@mention]_ to join a coinflip.\n Type _!leader_ to see the leaderboards.\n Type _!give [@mention] [coins]_ to give someone coins.\n Type _!wl_ to see your win/loss.",
-                    inline=False,
-                )
         else:
             embed.add_field(name="_No active coinflips_", value="\u200b", inline=True)
+
+        embed.add_field(
+            name="**Commands**",
+            value="\n Type _!coins_ to check your wallet.\n Type _!c [coins]_ to create a coinflip.\n Type _!j [@mention]_ to join a coinflip.\n Type _!leader_ to see the leaderboards.\n Type _!give [@mention] [coins]_ to give someone coins.\n Type _!wl_ to see your win/loss.",
+            inline=False,
+        )
         return embed
 
     def get_coinflip_results_message(self, _guild_id: int):
