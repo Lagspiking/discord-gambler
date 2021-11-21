@@ -32,9 +32,11 @@ class LeaderboardCommand(commands.Cog):
             count = 1
 
             for x in top_wallets:
-                creators += f"{count}. {guild.get_member(x[0]).name}\n"
-                coins += f"{x[1]}\n"
-                count += 1
+                user = guild.get_member(x[0])
+                if user != None:
+                    creators += f"{count}. {user.name}\n"
+                    coins += f"{x[1]}\n"
+                    count += 1
 
             embed.add_field(name="**__User__**", value=creators, inline=True)
             embed.add_field(name="**__Coins__**", value=coins, inline=True)

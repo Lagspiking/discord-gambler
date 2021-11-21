@@ -124,25 +124,26 @@ class CoinflipCog(commands.Cog, name="Coinflip"):
         embed.set_author(name=f"Lagspike™ | Giveaway: {self._giveaway}")
         embed.set_footer(text=f"Made by Nrwls & Sparks")
 
-        if CoinflipsDAO().get_open_coinflips() == False:
-            embed.add_field(name="_No active coinflips_", value="\u200b", inline=True)
-        else:
-            guild = discord.utils.get(self._bot.guilds, id=_guild_id)
-            creators = ""
-            prices = ""
-            for coinflip in CoinflipsDAO().get_open_coinflips().items():
+        guild = discord.utils.get(self._bot.guilds, id=_guild_id)
+        creators = ""
+        prices = ""
+        for coinflip in CoinflipsDAO().get_open_coinflips().items():
+            user = guild.get_member(coinflip[0])
+            if user != None:
                 creators += f"{guild.get_member(int(coinflip[0])).mention}\n"
                 prices += f"{coinflip[1]} coins\n"
 
+        if creators != "":
             embed.add_field(name="**User**", value=creators, inline=True)
             embed.add_field(name="**Stake**", value=prices, inline=True)
 
-        embed.add_field(
-            name="**Commands**",
-            value="\n Type _!coins_ to check your wallet.\n Type _!c [coins]_ to create a coinflip.\n Type _!j [@mention]_ to join a coinflip.\n Type _!leader_ to see the leaderboards.\n Type _!give [@mention] [coins]_ to give someone coins.\n Type _!wl_ to see your win/loss.",
-            inline=False,
-        )
-
+            embed.add_field(
+                name="**Commands**",
+                value="\n Type _!coins_ to check your wallet.\n Type _!c [coins]_ to create a coinflip.\n Type _!j [@mention]_ to join a coinflip.\n Type _!leader_ to see the leaderboards.\n Type _!give [@mention] [coins]_ to give someone coins.\n Type _!wl_ to see your win/loss.",
+                inline=False,
+            )
+        else:
+            embed.add_field(name="_No active coinflips_", value="\u200b", inline=True)
         return embed
 
     def get_coinflip_results_message(self):
@@ -151,22 +152,24 @@ class CoinflipCog(commands.Cog, name="Coinflip"):
         )
         embed.set_author(name=f"Lagspike™")
 
-        if CoinflipsDAO().get_recent_coinflips() == False:
-            embed.add_field(name="_No previous coinflips_", value="\u200b", inline=True)
-            return embed
-        else:
-            guild = discord.utils.get(self._bot.guilds, id=_guild_id)
+        guild = discord.utils.get(self._bot.guilds, id=_guild_id)
 
-            winners = ""
-            prices = ""
-            losers = ""
+        winners = ""
+        prices = ""
+        losers = ""
 
-            for coinflip in CoinflipsDAO().get_recent_coinflips()[::-1]:
+        for coinflip in CoinflipsDAO().get_recent_coinflips():
+            user = guild.get_member(coinflip[0])
+            if user != None:
                 winners += f"{guild.get_member(int(coinflip[0])).mention}\n"
                 prices += f"{coinflip[1]} coins\n"
                 losers += f"{guild.get_member(int(coinflip[2])).mention}\n"
 
+        if winners != "":
             embed.add_field(name="**__Winner__**", value=winners, inline=True)
             embed.add_field(name="**Stake**", value=prices, inline=True)
             embed.add_field(name="**__Loser__**", value=losers, inline=True)
+        else:
+            embed.add_field(name="_No previous coinflips_", value="\u200b", inline=True)
             return embed
+        return embed
