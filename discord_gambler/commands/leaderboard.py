@@ -17,7 +17,7 @@ class LeaderboardCommand(commands.Cog):
         if ctx.channel.name == _coinflip_channel and ctx.guild.id == _guild_id:
             guild = discord.utils.get(self.bot.guilds, id=_guild_id)
             bot_channel = discord.utils.get(guild.text_channels, name=_coinflip_channel)
-            top_wallets = UserWalletsDAO().get_top_wallets()
+            top_wallets = UserWalletsDAO().get_top_wallets(_guild_id)
 
             embed = discord.Embed(
                 title=f"Leaderboard",
