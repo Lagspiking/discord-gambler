@@ -163,7 +163,7 @@ class CoinflipCog(commands.Cog, name="Coinflip"):
         prices = ""
         losers = ""
 
-        recent_coinflips = CoinflipsDAO().get_recent_coinflips(_guild_id)
+        recent_coinflips = CoinflipsDAO().get_recent_coinflips(_guild_id)[::-1]
 
         if recent_coinflips:
             for coinflip in recent_coinflips:
