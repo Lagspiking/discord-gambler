@@ -45,7 +45,7 @@ class MessageListeners(commands.Cog):
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
         if ctx.channel.name == _coinflip_channel and ctx.channel.guild.id == _guild_id:
-            await ctx.send(f"{error}")
+            await ctx.send(f"{error}", delete_after=5)
             try:
                 await ctx.message.delete()
             except:
