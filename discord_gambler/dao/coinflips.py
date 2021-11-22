@@ -36,7 +36,7 @@ class CoinflipsDAO(PostgresDAO):
 
     def get_recent_coinflips(self, _guild_id: int):
         self.cur.execute(
-            "SELECT winning_id, staked_amount, losing_id FROM coinflips WHERE guild_id = %s AND accepted_id is not null order by finished_at ASC limit 10",
+            "SELECT winning_id, staked_amount, losing_id FROM coinflips WHERE guild_id = %s AND accepted_id is not null order by finished_at DESC limit 10",
             (_guild_id,),
         )
         if self.cur.rowcount != 0:
