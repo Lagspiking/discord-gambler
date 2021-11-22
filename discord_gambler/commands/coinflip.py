@@ -167,7 +167,7 @@ class CoinflipCommand(commands.Cog):
             await ctx.send(
                 embed=discord.Embed(
                     title="Information",
-                    description=f"{ctx.author.mention}, your win/loss is: {wins}/{loss}.\n Your win rate is {wins/(wins+loss)*100}% or {wins/(wins+loss)}",
+                    description=f"{ctx.author.mention}, your win/loss is: {wins}/{loss}.\n Your win rate is {round(wins/(wins+loss)*100, 2)}% or {round(wins/(wins+loss), 2)}",
                     color=discord.Color.green(),
                 ),
                 delete_after=5,
