@@ -64,7 +64,11 @@ class CoinsTasks(commands.Cog):
     def get_users_in_voice_channels(self):
         active_members = []
         for channel in self._bot.get_guild(_guild_id).channels:
-            if channel.type == discord.ChannelType.voice and len(channel.members) > 0:
+            if (
+                channel.type == discord.ChannelType.voice
+                and len(channel.members) > 0
+                and channel.id != 763524601237733406
+            ):
                 for member in channel.members:
                     active_members.append(member)
         return active_members
